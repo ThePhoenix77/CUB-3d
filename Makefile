@@ -49,7 +49,7 @@ clean:
 	# make -s clean -C mlx_macos
 
 fclean: clean
-	rm -f $(NAME)
+	rm -rf $(NAME)
 
 re: fclean all
 
