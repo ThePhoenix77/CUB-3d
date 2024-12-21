@@ -23,16 +23,14 @@ endif
 
 SRCS_DIR = src
 OBJS_DIR = obj
-SRCS = $(wildcard $(SRCS_DIR)/*.c) $(wildcard $(SRCS_DIR)/*/*.c)
+SRCS = $(shell find $(SRCS_DIR) -type f -name "*.c")
 OBJS = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 
 all: $(MLX) $(NAME)
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJS_DIR)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
-$(OBJS_DIR):
 	mkdir -p $(OBJS_DIR)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(MLX_MACOS):
 	make -s -C mlx_macos
