@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 #define WIN_WIDTH 800
 #define WIN_HEIGHT 600
@@ -23,7 +24,7 @@ typedef struct s_textures
 	char	*south;
 	char	*floor;
 	char	*ceiling;
-};
+} t_textures;
 
 // Structure to hold the data
 typedef struct s_data
@@ -46,7 +47,7 @@ typedef struct s_data
     int     bpp;            // bits per pixel
     int     line_length;    // line length
     int     endian;         // endian format
-    char    **map;         // game map
+    // char    **map;         // game map
 
     // player coordinates and movements
         // coordinates
