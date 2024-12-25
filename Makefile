@@ -1,7 +1,7 @@
 NAME = cub3D
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 
 MLX_MACOS = mlx_macos/libmlx.a
 MLX_LINUX = mlx_linux/libmlx.a
@@ -28,8 +28,8 @@ OBJS = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 
 all: $(MLX) $(NAME)
 
-$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJS_DIR)
-	mkdir -p $(OBJS_DIR)
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
+	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(MLX_MACOS):
@@ -49,7 +49,10 @@ clean:
 fclean: clean
 	rm -rf $(NAME)
 
-re: fclean all
+X:
+	clear
+
+re: fclean all X
 
 .PHONY: all clean fclean re
 
