@@ -11,9 +11,32 @@
 #define WIN_HEIGHT 600
 #define TILE_SIZE 16
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
+# endif
+
+typedef struct s_textures
+{
+	char	*norh;
+	char	*west;
+	char	*east;
+	char	*south;
+	char	*floor;
+	char	*ceiling;
+};
+
 // Structure to hold the data
 typedef struct s_data
 {
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+    t_textures  textures;
+	char		**file_data;
+	char		**map;
+	int	 fd;
+
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
     // mlx and the game display pointers
 
     void    *mlx;          // mlx pointer
@@ -39,6 +62,21 @@ typedef struct s_data
     // All minilibx functions
 
 // Prototypes
+    // Parsing
+void	my_perror(int status, char *str);
+int		ft_strncmp(const char *s1, const char *s2, int n);
+int	 	ft_strlen(const char *str);
+int		check_file(const char *argv);
+void	file_parsing(t_data *data, char *str);
+char	**store_data(int fd);
+char	*ft_strdup(char *s1);
+char	*ft_strchr(const char *s, int c);
+char	*ft_substr(char *s, unsigned int start, size_t len);
+char	**ft_split(char const *s, char c);
+char	*get_next_line(int fd);
+char	*ft_strjoin(char *s1, char *s2);
+void	*ft_calloc(size_t count, size_t size);
+
     // Game win events
 int close_window(t_data *data);
 int key_press(int key, t_data *data);
@@ -54,4 +92,3 @@ void move_player(t_data *data, double move_x, double move_y);
 // void move_player(t_data *data, double move_x, double move_y, int map_height, int map_width);
 
 #endif
-
