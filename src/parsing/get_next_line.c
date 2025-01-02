@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 16:57:40 by aragragu          #+#    #+#             */
-/*   Updated: 2024/12/21 18:07:42 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/12/26 12:53:37 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static char	*set_aftern(char *line)
 		i++;
 	if (line[i] == '\0' || line[1] == '\0')
 		return (free(line), line = NULL, NULL);
-	aftern = ft_substr(line, i + 1, ft_strlen(line) - i);
+	aftern = ft_substr2(line, i + 1, ft_strlen(line) - i);
 	if (!aftern)
 		return (free(line), line = NULL, NULL);
 	if (*aftern == '\0')
