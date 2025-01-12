@@ -6,13 +6,20 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:00:58 by aragragu          #+#    #+#             */
-/*   Updated: 2024/12/21 17:01:15 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/12/26 12:53:10 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/linux_inc/cub3d.h"
 
-char	*ft_substr(char *s, unsigned int start, size_t len)
+int ft_strlen(const char *str)
+{
+	int i=0;
+	while (str[i])
+		i++;
+	return (i);
+}
+char	*ft_substr2(char *s, unsigned int start, size_t len)
 {
 	size_t	i;
 	char	*str;

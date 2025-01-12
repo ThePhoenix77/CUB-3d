@@ -1,7 +1,7 @@
 NAME = cub3D
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
 
 MLX_MACOS = mlx_macos/libmlx.a
 MLX_LINUX = mlx_linux/libmlx.a
@@ -18,7 +18,7 @@ else ifeq ($(OS), Linux)
 	MLX = $(MLX_LINUX)
 	LIBS = -Lmlx_linux -lmlx -lXext -lX11 -lm
 else
-	$(error OS ma msupportich a hassssssssssssan)
+	$(error Unsupported OS. Only Darwin and Linux are supported.)
 endif
 
 SRCS_DIR = src
@@ -26,7 +26,7 @@ OBJS_DIR = obj
 SRCS = $(shell find $(SRCS_DIR) -type f -name "*.c")
 OBJS = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 
-all: $(MLX) $(NAME)
+all: $(NAME)
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 	mkdir -p $(dir $@)
@@ -37,14 +37,14 @@ $(MLX_MACOS):
 
 $(MLX_LINUX):
 	make -s -C mlx_linux
-	
-$(NAME): $(OBJS)
+
+$(NAME): $(OBJS) $(MLX)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
 
 clean:
 	rm -rf $(OBJS_DIR)
-	# make -s clean -C mlx_linux
-	# make -s clean -C mlx_macos
+	# make -s clean mlx_linux
+	# make -s clean mlx_macos
 
 fclean: clean
 	rm -rf $(NAME)
@@ -55,9 +55,3 @@ X:
 re: fclean all X
 
 .PHONY: all clean fclean re
-
-
-
-
-# 1.3457248783335231e-17 * 5.85 / 2.41e+03 
-

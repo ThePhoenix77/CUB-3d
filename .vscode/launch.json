@@ -3,11 +3,36 @@
   "configurations": [
     {
       "name": "C/C++ Runner: Debug Session",
-      "type": "lldb",
+      "type": "lldb",  // Set the debugger type to LLDB
       "request": "launch",
       "args": [],
-      "cwd": "/Users/tboussad/work/CUB-3d/src",
-      "program": "/Users/tboussad/work/CUB-3d/src/build/Debug/outDebug"
+      "cwd": "/home/tboussad/work/CUB-3d/src",  // Your project directory (optional)
+      "program": "/home/tboussad/work/CUB-3d/cub3D",  // Path to your compiled executable
+      "stopAtEntry": false,
+      "preLaunchTask": "build",  // Link to the 'build' task (this will run 'make' before debugging)
+      "externalConsole": true,  // Optional: Run the program in an external terminal for better output
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for lldb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
     }
   ]
 }
+
+
+// {
+//   "version": "0.2.0",
+//   "configurations": [
+//     {
+//       "name": "C/C++ Runner: Debug Session",
+//       "type": "lldb",
+//       "request": "launch",
+//       "args": [],
+//       "cwd": "/Users/tboussad/work/CUB-3d/src",
+//       "program": "/Users/tboussad/work/CUB-3d/src/build/Debug/outDebug"
+//     }
+//   ]
+// }
