@@ -153,6 +153,7 @@ void ppos(t_player *player);
 void init_player_direction(t_player *player, char orientation);
 void clear_img(t_data *data);
 void raycast(t_data *data);
+void	ft_bzero2(void *s, size_t n);
 
 // Utils
 void quit(char *msg);

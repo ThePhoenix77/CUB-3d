@@ -14,9 +14,6 @@ void	ft_bzero2(void *s, size_t n)
 	}
 }
 
-#include "cub3d.h"
-#include <math.h>
-
 void	init_ray(t_data *data, t_ray *ray, int x)
 {
 	t_player	*player;

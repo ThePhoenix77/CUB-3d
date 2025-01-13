@@ -41,6 +41,31 @@ void draw_rectangle(t_img *img, int x, int y, int width, int height, int color, 
     }
 }
 
+// void render_map(t_data *data)
+// {
+//     int x;
+//     int y;
+//     int img_width;
+//     int img_height;
+//     int color;
+
+//     y = 0;
+//     img_width = data->map.width * CELL_SIZE;
+//     img_height = data->map.height * CELL_SIZE;
+//     while (y < data->map.height)
+//     {
+//         x = 0;
+//         while (x < data->map.width)
+//         {
+//             color = color_cell_matching(data->map.grid[y][x]);
+//             draw_rectangle(&data->img, x * (CELL_SIZE), y * (CELL_SIZE),
+//                            CELL_SIZE, CELL_SIZE, color, img_width, img_height);
+//             x++;
+//         }
+//         y++;
+//     }
+// }
+
 void render_map(t_data *data)
 {
     int x;
@@ -48,23 +73,69 @@ void render_map(t_data *data)
     int img_width;
     int img_height;
     int color;
+    int offset_x = 10; // Offset from the top-left corner (adjust as needed)
+    int offset_y = 10;
 
     y = 0;
-    img_width = data->map.width * CELL_SIZE;
-    img_height = data->map.height * CELL_SIZE;
+    img_width = data->map.width;
+    img_height = data->map.height;
     while (y < data->map.height)
     {
         x = 0;
         while (x < data->map.width)
         {
             color = color_cell_matching(data->map.grid[y][x]);
-            draw_rectangle(&data->img, x * (CELL_SIZE), y * (CELL_SIZE),
-                           CELL_SIZE, CELL_SIZE, color, img_width, img_height);
+            draw_rectangle(&data->img, 
+                           offset_x + x, 
+                           offset_y + y,
+                           CELL_SIZE, 
+                           CELL_SIZE, 
+                           color, 
+                           img_width, 
+                           img_height);
             x++;
         }
         y++;
     }
 }
+
+// void render_player(t_data *data)
+// {
+//     int player_x;
+//     int player_y;
+//     int player_size;
+//     int player_color;
+//     int line_color;
+//     int x_end;
+//     int y_end;
+
+//     player_x = (int)(data->player.x);
+//     player_y = (int)(data->player.y);
+//     player_size = 10;
+//     player_color = 0xFF0000;
+//     line_color = 0x00FF00;
+
+//     // Debugging output
+//     // printf("Rendering player at: X = %d, Y = %d\n", player_x, player_y);
+
+//     // bounds check
+//     if (player_x >= 0 && player_x < data->map.width * 32 &&
+//         player_y >= 0 && player_y < data->map.height * 32)
+//     {
+//         // draw player rectangle
+//         draw_rectangle(&data->img, player_x - player_size / 2, player_y - player_size / 2,
+//                        player_size, player_size, player_color, data->map.width * 32, data->map.height * 32);
+
+//         // Draw player direction line
+//         x_end = player_x + (int)(data->player.dir_x * 32);
+//         y_end = player_y + (int)(data->player.dir_y * 32);
+//         draw_line(&data->img, player_x, player_y, x_end, y_end, line_color);
+//     }
+//     else
+//     {
+//         printf("Player is out of bounds for rendering.\n");
+//     }
+// }
 
 void render_player(t_data *data)
 {
@@ -75,35 +146,33 @@ void render_player(t_data *data)
     int line_color;
     int x_end;
     int y_end;
+    int offset_x = 10; // Offset for minimap
+    int offset_y = 10;
 
     player_x = (int)(data->player.x);
     player_y = (int)(data->player.y);
-    player_size = 10;
+    player_size = 5; // Smaller player marker for minimap
     player_color = 0xFF0000;
     line_color = 0x00FF00;
 
-    // Debugging output
-    // printf("Rendering player at: X = %d, Y = %d\n", player_x, player_y);
+    // Transform player coordinates to minimap
+    int mini_x = offset_x + player_x;
+    int mini_y = offset_y + player_y;
 
-    // bounds check
-    if (player_x >= 0 && player_x < data->map.width * 32 &&
-        player_y >= 0 && player_y < data->map.height * 32)
-    {
-        // draw player rectangle
-        draw_rectangle(&data->img, player_x - player_size / 2, player_y - player_size / 2,
-                       player_size, player_size, player_color, data->map.width * 32, data->map.height * 32);
+    draw_rectangle(&data->img, 
+                   mini_x - player_size / 2, 
+                   mini_y - player_size / 2,
+                   player_size, 
+                   player_size, 
+                   player_color, 
+                   data->map.width * CELL_SIZE, 
+                   data->map.height * CELL_SIZE);
 
-        // Draw player direction line
-        x_end = player_x + (int)(data->player.dir_x * 32);
-        y_end = player_y + (int)(data->player.dir_y * 32);
-        draw_line(&data->img, player_x, player_y, x_end, y_end, line_color);
-    }
-    else
-    {
-        printf("Player is out of bounds for rendering.\n");
-    }
+    // Player direction line
+    x_end = mini_x + (int)(data->player.dir_x * 20); // Shorter line for minimap
+    y_end = mini_y + (int)(data->player.dir_y * 20);
+    draw_line(&data->img, mini_x, mini_y, x_end, y_end, line_color);
 }
-
 
 // put_pixel_to_image(t_img *img, int x, int y, int color, int img_width, int img_height)
 void clear_img(t_data *data)
