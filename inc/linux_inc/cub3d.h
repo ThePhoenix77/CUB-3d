@@ -13,6 +13,15 @@
 #  define BUFFER_SIZE 10
 # endif
 
+// Macro for enabling/disabling debug output
+#define DEBUG_MODE 1
+
+#if DEBUG_MODE
+#define DEBUG_PRINTF(...) printf(__VA_ARGS__)
+#else
+#define DEBUG_PRINTF(...)
+#endif
+
 // --------------------
 // Constants
 // --------------------       
@@ -27,13 +36,12 @@
 #define RIGHT_KEY 65363    // Right arrow key for rotating right
 #define ESCAPE_KEY 65307   // Escape key
 
-#define MOVE_SPEED 4
-#define ROT_SPEED 0.05
+#define MOVE_SPEED 8
+#define ROT_SPEED 2
 #define HITBOX_MARG 0.2
 // #define HITBOX_MARG 0.15 // more edge close
 
-#define MAX_SCREEN_WIDTH 80
-#define MAX_SCREEN_HEIGHT 60
+#define MINIMAP_SCALE 0.2
 
 // --------------------
 // Structures
@@ -70,10 +78,12 @@ typedef struct s_map
 typedef struct s_img
 {
     void *img_ptr;              // Image pointer in MiniLibX
-    char *data;                 // Pixel data
+    unsigned char *data;                 // Pixel data
     int bpp;                    // Bits per pixel
     int size_line;              // Size of a line
-    int endian;                 // Endianness of pixel data
+    int endian;   
+    int width;                  // Width of the image
+    int height;               // Endianness of pixel data
 } t_img;
 
 typedef struct s_ray
@@ -83,10 +93,10 @@ typedef struct s_ray
     double ray_dir_y;
     int map_x;
     int map_y;
-    double side_dist_x;
-    double side_dist_y;
     double delta_dist_x;
     double delta_dist_y;
+    double side_dist_x;
+    double side_dist_y;
     double perp_wall_dist;
     int step_x;
     int step_y;
@@ -131,14 +141,49 @@ typedef struct s_data
 // --------------------
 
 // Initialization
+void map_init(t_map *map, const char *map_file);
 void set_player_plane(t_player *player);
 int find_player_position(t_map *map, t_player *player);
-void map_init(t_map *map, const char *map_file);
-void draw_pixel(t_img *img, int x, int y, int color);
-void draw_line(t_img *img, int x1, int y1, int x2, int y2, int color);
-void render(t_data *data);
 void data_init(t_data *data);
+void init_player_direction(t_player *player, char orientation);
+
+                                /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
+
+// Rendering
+int get_pixel_index(int x, int y, t_img *img);
+void put_pixel_to_image(t_img *img, int x, int y, int color, int img_width, int img_height);
+void draw_pixel(t_img *img, int x, int y, int color);
+int color_cell_matching(char cell);
+void draw_line(t_img *img, int x1, int y1, int x2, int y2, int color);
+void draw_rectangle(t_img *img, int x, int y, int width, int height, int color, int img_width, int img_height);
+void render(t_data *data);
 void map_free(t_map *map);
+void raycast(t_data *data);
+void render_minimap(t_data *data);
+void draw_rectangle(t_img *img, int x, int y, int width, int height, int color, int img_width, int img_height);
+void render_3d_view(t_data *data);
+
+                                /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
+
+// Raycasting
+void initialize_ray(t_ray *ray, const t_data *data, int x);
+void calculate_step_and_side_dist(t_ray *ray, const t_data *data);
+void perform_dda(t_ray *ray, const t_map *map);
+void calculate_wall_distance(t_ray *ray, const t_player *player);
+void calculate_line_dimensions(t_ray *ray, int screen_height);
+void draw_wall(const t_ray *ray, t_data *data, int x);
+void raycast(t_data *data);
+// void initialize_ray(t_ray *ray, t_data *data, int x);
+// void calculate_step_and_side_dist(t_ray *ray, t_data *data);
+// void perform_dda(t_ray *ray, t_map map);
+// void calculate_wall_distance(t_ray *ray, t_player player);
+// void calculate_line_dimensions(t_ray *ray, int screen_height);
+// void draw_wall(t_ray *ray, t_data *data, int x);
+// void raycast(t_data *data);
+
+                                /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
+
+// Movements
 void move_forward(t_player *player, t_map *map);
 void move_backward(t_player *player, t_map *map);
 void strafe_left(t_player *player, t_map *map);
@@ -146,17 +191,21 @@ void strafe_right(t_player *player, t_map *map);
 void rotate_left(t_player *player);
 void rotate_right(t_player *player);
 void move_player(t_data *data);
-int game_loop(t_data *data);
 int key_press(int key, t_data *data);
 int key_release(int key, t_data *data);
-void ppos(t_player *player);
-void init_player_direction(t_player *player, char orientation);
-void clear_img(t_data *data);
-void raycast(t_data *data);
-void	ft_bzero2(void *s, size_t n);
+// void ppos(t_player *player);
+// void draw_rectangle(t_img *img, int x, int y, int width, int height, int color);
+
+                                /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
 
 // Utils
 void quit(char *msg);
+void ft_bzero(void *s, size_t n);
+int game_loop(t_data *data);
+void clear_img(t_data *data);
+void draw_vertical_line2(t_img *img, int x, t_ray *ray, int color);
+
+                                /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
 
 // Parsing
 void	my_perror(int status, char *str);

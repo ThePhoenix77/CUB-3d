@@ -1,4 +1,5 @@
 #include "cub3d.h"
+#include <string.h>
 
 void init_player_defaults(t_player *player)
 {
@@ -15,31 +16,44 @@ void init_player_defaults(t_player *player)
 void player_init(t_map *map, t_player *player)
 {
     if (!find_player_position(map, player))
-    {
         quit("error: Player not found in the map !");
-    }
-    // center coordinates
     init_player_defaults(player);
     // set_player_plane(player);
     // init_player_direction(player, map->grid[(int)player->y][(int)player->x]);
     init_player_direction(player, map->grid[(int)player->y / CELL_SIZE][(int)player->x / CELL_SIZE]);
 }
 
-void img_init(t_data *data)
+// void img_init(t_data *data)
+// {
+//     data->img.img_ptr = mlx_new_image(data->mlx, data->map.width * 32, data->map.height * 32);
+//     data->img.data = mlx_get_data_addr(data->img.img_ptr, &data->img.bpp, &data->img.size_line, &data->img.endian);
+// }
+
+void init_img(t_data *data)
 {
-    data->img.img_ptr = mlx_new_image(data->mlx, data->map.width * 32, data->map.height * 32);
-    data->img.data = mlx_get_data_addr(data->img.img_ptr, &data->img.bpp, &data->img.size_line, &data->img.endian);
+    data->img.width = data->map.width * CELL_SIZE;
+    data->img.height = data->map.height * CELL_SIZE;
+
+    data->img.img_ptr = mlx_new_image(data->mlx, data->img.width, data->img.height);
+    if (!data->img.img_ptr)
+        quit("Error: Image creation failed!");
+
+    data->img.data = (unsigned char *)mlx_get_data_addr(data->img.img_ptr, &data->img.bpp, &data->img.size_line, &data->img.endian);
+    if (!data->img.data)
+        quit("Error: Failed to get image data address!");
 }
 
-void print_map(t_data *data) {
-    for (int y = 0; y < data->map.height; y++) {
-        if (data->map.grid[y] != NULL) {
-            printf("%s\n", data->map.grid[y]);
-        } else {
-            printf("Null string at row %d\n", y);
-        }
-    }
-}
+
+
+// void print_map(t_data *data) {
+//     for (int y = 0; y < data->map.height; y++) {
+//         if (data->map.grid[y] != NULL) {
+//             printf("%s\n", data->map.grid[y]);
+//         } else {
+//             printf("Null string at row %d\n", y);
+//         }
+//     }
+// }
 
 // void max_dimensions(t_data *data)
 // {
@@ -61,30 +75,24 @@ void data_init(t_data *data)
     if (!data->mlx)
         quit("Error: MiniLibX initialization failed!");
 
-    // Initialize the map from a file
+    // Initialize the map
     map_init(&data->map, "/home/tboussad/work/CUB-3d/maps/test.map");
     if (data->map.grid == NULL)
         quit("Error: Map initialization failed!");
 
-    // Create a new window based on the map's width and height
-    // max_dimensions(data);
+    // Create a new window
     data->win = mlx_new_window(data->mlx, data->map.width * CELL_SIZE, data->map.height * CELL_SIZE, "Cub3D");
     if (!data->win)
         quit("Error: Window creation failed!");
 
-    // Initialize the player based on the map
+    // Initialize the player
     player_init(&data->map, &data->player);
 
-    // Initialize the image for rendering with correct size
-    data->img.img_ptr = mlx_new_image(data->mlx, data->map.width * CELL_SIZE, data->map.height * CELL_SIZE);
-    if (!data->img.img_ptr)
-        quit("Error: Image creation failed!");
-
-    // Get the pixel data address for the image
-    data->img.data = mlx_get_data_addr(data->img.img_ptr, &data->img.bpp, &data->img.size_line, &data->img.endian);
-    if (!data->img.data)
-        quit("Error: Failed to get image data address!");
+    // Initialize the image
+    init_img(data);
 }
+
+
 
 
 // void data_init(t_data *data)

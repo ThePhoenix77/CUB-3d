@@ -48,7 +48,6 @@ int main()
     mlx_loop_hook(data.mlx, game_loop, &data);
     mlx_hook(data.win, 17, 0, handle_exit, NULL);
 
-    // print_player_info(&data.player);
     mlx_loop(data.mlx);
 
     return 0;

@@ -1,7 +1,7 @@
 NAME = cub3D
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -Ofast#-fsanitize=address
 
 MLX_MACOS = mlx_macos/libmlx.a
 MLX_LINUX = mlx_linux/libmlx.a
@@ -12,7 +12,7 @@ OS = $(shell uname -s)
 ifeq ($(OS), Darwin)
 	INCLUDES += -Imlx_macos -Iinc/macos_inc
 	MLX = $(MLX_MACOS)
-	LIBS = -Lmlx_macos -lmlx -framework OpenGL -framework AppKit
+	LIBS = -Lmlx_macos -lmlx -framework OpenGL -framework AppKit -O3
 else ifeq ($(OS), Linux)
 	INCLUDES += -Imlx_linux -Iinc/linux_inc
 	MLX = $(MLX_LINUX)
