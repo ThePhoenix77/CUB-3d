@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void initialize_ray(t_ray *ray, const t_data *data, int x)
+void initialize_ray(t_ray *ray, t_data *data, int x)
 {
     ray->camera_x = 2.0 * x / (double)data->img.width - 1.0;
     ray->ray_dir_x = data->player.dir_x + data->player.plane_x * ray->camera_x;
@@ -11,53 +11,7 @@ void initialize_ray(t_ray *ray, const t_data *data, int x)
     ray->delta_dist_y = (ray->ray_dir_y == 0) ? 1e30 : fabs(1.0 / ray->ray_dir_y);
 }
 
-void calculate_step_and_side_dist(t_ray *ray, const t_data *data)
-{
-    if (ray->ray_dir_x < 0)
-    {
-        ray->step_x = -1;
-        ray->side_dist_x = (data->player.x - ray->map_x) * ray->delta_dist_x;
-    }
-    else
-    {
-        ray->step_x = 1;
-        ray->side_dist_x = (ray->map_x + 1.0 - data->player.x) * ray->delta_dist_x;
-    }
-    if (ray->ray_dir_y < 0)
-    {
-        ray->step_y = -1;
-        ray->side_dist_y = (data->player.y - ray->map_y) * ray->delta_dist_y;
-    }
-    else
-    {
-        ray->step_y = 1;
-        ray->side_dist_y = (ray->map_y + 1.0 - data->player.y) * ray->delta_dist_y;
-    }
-}
-
-void perform_dda(t_ray *ray, const t_map *map)
-{
-    ray->hit = 0;
-    while (ray->hit == 0)
-    {
-        if (ray->side_dist_x < ray->side_dist_y)
-        {
-            ray->side_dist_x += ray->delta_dist_x;
-            ray->map_x += ray->step_x;
-            ray->side = 0;
-        }
-        else
-        {
-            ray->side_dist_y += ray->delta_dist_y;
-            ray->map_y += ray->step_y;
-            ray->side = 1;
-        }
-        if (map->grid[ray->map_y / CELL_SIZE][ray->map_x / CELL_SIZE] == '1')
-            ray->hit = 1;
-    }
-}
-
-void calculate_wall_distance(t_ray *ray, const t_player *player)
+void calculate_wall_distance(t_ray *ray, t_player *player)
 {
     if (ray->side == 0)
         ray->perp_wall_dist = (ray->map_x - player->x + (1 - ray->step_x) / 2) / ray->ray_dir_x;
@@ -67,7 +21,7 @@ void calculate_wall_distance(t_ray *ray, const t_player *player)
 
 void calculate_line_dimensions(t_ray *ray, int screen_height)
 {
-    ray->line_height = (int)(screen_height / ray->perp_wall_dist * CELL_SIZE);
+    ray->line_height = (int)(screen_height / ray->perp_wall_dist * 40);
     ray->draw_start = (-ray->line_height / 2 + screen_height / 2);
     if (ray->draw_start < 0)
         ray->draw_start = 0;
@@ -76,43 +30,24 @@ void calculate_line_dimensions(t_ray *ray, int screen_height)
         ray->draw_end = screen_height - 1;
 }
 
-void draw_wall(const t_ray *ray, t_data *data, int x)
+void draw_wall(t_ray *ray, t_data *data, int x)
 {
     int y;
     int pixel;
     int color;
 
     y = ray->draw_start;
-    color = (ray->side == 0) ? 0xAAAAAA : 0x777777;
+    color = 0x000000;
+    if (ray->side == 0)
+        color = 0x777777;
+    else
+        color = 0xAAAAAA;
     while (y <= ray->draw_end)
     {
         pixel = y * data->img.size_line + x * (data->img.bpp / 8);
         data->img.data[pixel] = color & 0xFF;
         data->img.data[pixel + 1] = (color >> 8) & 0xFF;
         data->img.data[pixel + 2] = (color >> 16) & 0xFF;
-        y++;
-    }
-}
-
-void clear_screen(t_data *data, int color)
-{
-    int x;
-    int y;
-    int pixel;
-
-    x = 0;
-    y = 0;
-    while (y < data->img.height)
-    {
-        x = 0;
-        while (x < data->img.width)
-        {
-            pixel = y * data->img.size_line + x * (data->img.bpp / 8);
-            data->img.data[pixel] = color & 0xFF;
-            data->img.data[pixel + 1] = (color >> 8) & 0xFF;
-            data->img.data[pixel + 2] = (color >> 16) & 0xFF;
-            x++;
-        }
         y++;
     }
 }
@@ -139,7 +74,7 @@ void raycast(t_data *data)
 
 // #include "cub3d.h"
 
-// void initialize_ray(t_ray *ray, const t_data *data, int x)
+// void initialize_ray(t_ray *ray, t_data *data, int x)
 // {
 //     ray->camera_x = 2.0 * x / (double)data->img.width - 1.0;
 //     ray->ray_dir_x = data->player.dir_x + data->player.plane_x * ray->camera_x;
@@ -153,7 +88,7 @@ void raycast(t_data *data)
 //                  x, ray->camera_x, ray->ray_dir_x, ray->ray_dir_y);
 // }
 
-// void calculate_step_and_side_dist(t_ray *ray, const t_data *data)
+// void calculate_step_and_side_dist(t_ray *ray, t_data *data)
 // {
 //     ray->step_x = (ray->ray_dir_x < 0) ? -1 : 1;
 //     ray->side_dist_x = (ray->ray_dir_x < 0)
@@ -169,7 +104,7 @@ void raycast(t_data *data)
 //                  ray->step_x, ray->step_y, ray->side_dist_x, ray->side_dist_y);
 // }
 
-// void perform_dda(t_ray *ray, const t_map *map)
+// void perform_dda(t_ray *ray, t_map *map)
 // {
 //     ray->hit = 0;
 //     while (ray->hit == 0)
@@ -195,7 +130,7 @@ void raycast(t_data *data)
 //     }
 // }
 
-// void calculate_wall_distance(t_ray *ray, const t_player *player)
+// void calculate_wall_distance(t_ray *ray, t_player *player)
 // {
 //     ray->perp_wall_dist = (ray->side == 0)
 //         ? (ray->map_x - player->x + (1 - ray->step_x) / 2) / ray->ray_dir_x
@@ -220,7 +155,7 @@ void raycast(t_data *data)
 //                  ray->line_height, ray->draw_start, ray->draw_end);
 // }
 
-// void draw_wall(const t_ray *ray, t_data *data, int x)
+// void draw_wall(t_ray *ray, t_data *data, int x)
 // {
 //     int y;
 //     int pixel;

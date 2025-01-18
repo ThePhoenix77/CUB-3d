@@ -1,5 +1,24 @@
 # include "cub3d.h"
 
+// Helper function to check if a position is walkable
+int is_walkable(t_map *map, double x, double y)
+{
+    // Calculate the grid cell boundaries the player hitbox should consider
+    int top_left_x;
+    int top_left_y;
+    int bottom_right_x;
+    int bottom_right_y;
+
+    top_left_x = (int)(x - HITBOX_MARG);
+    top_left_y = (int)(y - HITBOX_MARG);
+    bottom_right_x = (int)(x + HITBOX_MARG);
+    bottom_right_y = (int)(y + HITBOX_MARG);
+    return (map->grid[top_left_y][top_left_x] == '0' &&
+           map->grid[top_left_y][bottom_right_x] == '0' &&
+           map->grid[bottom_right_y][top_left_x] == '0' &&
+           map->grid[bottom_right_y][bottom_right_x] == '0');
+}
+
 void rotate_left(t_player *player)
 {
     double old_dir_x;

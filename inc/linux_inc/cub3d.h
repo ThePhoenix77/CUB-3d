@@ -22,6 +22,7 @@
 #define DEBUG_PRINTF(...)
 #endif
 
+// 💨🥂🍎🍌🥬 ou tiriri m3a 💃
 // --------------------
 // Constants
 // --------------------       
@@ -36,16 +37,33 @@
 #define RIGHT_KEY 65363    // Right arrow key for rotating right
 #define ESCAPE_KEY 65307   // Escape key
 
-#define MOVE_SPEED 8
+#define MOVE_SPEED 4
 #define ROT_SPEED 2
 #define HITBOX_MARG 0.2
 // #define HITBOX_MARG 0.15 // more edge close
 
-#define MINIMAP_SCALE 0.2
+#define PI 3.141592653589793
+
+#define MINIMAP_CENTER_X 100 // Adjust as needed for your window dimensions
+#define MINIMAP_CENTER_Y 100
+#define MINIMAP_TILE_SIZE 10
+
+#define MINIMAP_RADIUS 100
+#define MINIMAP_WIDTH 200
+#define MINIMAP_HEIGHT 200
+#define MINIMAP_SCALE 4
+#define TRAIL_MAX_SIZE 100 
 
 // --------------------
 // Structures
 // --------------------
+
+typedef struct s_player_trail
+{
+    int x[TRAIL_MAX_SIZE];   // X coordinates of trail positions
+    int y[TRAIL_MAX_SIZE];   // Y coordinates of trail positions
+    int size;                // Current size of the trail (number of positions stored)
+} t_player_trail;
 
 // Player structure
 typedef struct s_player
@@ -129,10 +147,12 @@ typedef struct s_data
 {
     void *mlx;                  // MiniLibX instance
     void *win;                  // Window pointer
-    t_textures  textures;
     t_map map;                  // Map data
     t_player player;            // Player data
+    t_player_trail player_trail;
     t_img img;
+    t_textures  textures;
+    t_parsing *info;
     // int key_state[256];
 } t_data;
 
@@ -151,8 +171,9 @@ void init_player_direction(t_player *player, char orientation);
 
 // Rendering
 int get_pixel_index(int x, int y, t_img *img);
-void put_pixel_to_image(t_img *img, int x, int y, int color, int img_width, int img_height);
 void draw_pixel(t_img *img, int x, int y, int color);
+void put_pixel_to_image(t_img *img, int x, int y, int color, int img_width, int img_height);
+void calculate_line_steps(int x1, int y1, int x2, int y2, int *dx, int *dy, int *p);
 int color_cell_matching(char cell);
 void draw_line(t_img *img, int x1, int y1, int x2, int y2, int color);
 void draw_rectangle(t_img *img, int x, int y, int width, int height, int color, int img_width, int img_height);
@@ -166,24 +187,25 @@ void render_3d_view(t_data *data);
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
 
 // Raycasting
-void initialize_ray(t_ray *ray, const t_data *data, int x);
-void calculate_step_and_side_dist(t_ray *ray, const t_data *data);
-void perform_dda(t_ray *ray, const t_map *map);
-void calculate_wall_distance(t_ray *ray, const t_player *player);
-void calculate_line_dimensions(t_ray *ray, int screen_height);
-void draw_wall(const t_ray *ray, t_data *data, int x);
-void raycast(t_data *data);
-// void initialize_ray(t_ray *ray, t_data *data, int x);
-// void calculate_step_and_side_dist(t_ray *ray, t_data *data);
-// void perform_dda(t_ray *ray, t_map map);
-// void calculate_wall_distance(t_ray *ray, t_player player);
+// void initialize_ray(t_ray *ray, const t_data *data, int x);
+// void calculate_step_and_side_dist(t_ray *ray, const t_data *data);
+// void perform_dda(t_ray *ray, const t_map *map);
+// void calculate_wall_distance(t_ray *ray, const t_player *player);
 // void calculate_line_dimensions(t_ray *ray, int screen_height);
-// void draw_wall(t_ray *ray, t_data *data, int x);
+// void draw_wall(const t_ray *ray, t_data *data, int x);
 // void raycast(t_data *data);
+void initialize_ray(t_ray *ray, t_data *data, int x);
+void calculate_step_and_side_dist(t_ray *ray, t_data *data);
+void perform_dda(t_ray *ray, t_map *map);
+void calculate_wall_distance(t_ray *ray, t_player *player);
+void calculate_line_dimensions(t_ray *ray, int screen_height);
+void draw_wall(t_ray *ray, t_data *data, int x);
+void raycast(t_data *data);
 
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
 
 // Movements
+int is_walkable(t_map *map, double x, double y);
 void move_forward(t_player *player, t_map *map);
 void move_backward(t_player *player, t_map *map);
 void strafe_left(t_player *player, t_map *map);
@@ -203,6 +225,7 @@ void quit(char *msg);
 void ft_bzero(void *s, size_t n);
 int game_loop(t_data *data);
 void clear_img(t_data *data);
+void clear_screen(t_data *data, int color);
 void draw_vertical_line2(t_img *img, int x, t_ray *ray, int color);
 
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/

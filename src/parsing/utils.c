@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/linux_inc/cub3d.h"
-
+/*
 char	*ft_strjoin(char *s1, char *s2)
 {
 	char			*ptr;
@@ -216,3 +216,4 @@ int		only_space(char *str)
 	}
 	return (1);
 }
+*/

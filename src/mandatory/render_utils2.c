@@ -1,10 +1,14 @@
 # include "cub3d.h"
 
-void calculate_line_steps(int x1, int y1, int x2, int y2, int *dx, int *dy, int *p)
+int color_cell_matching(char cell)
 {
-    *dx = abs(x2 - x1);
-    *dy = abs(y2 - y1);
-    *p = 2 * (*dy) - (*dx); // Bresenham algo
+    if (cell == '1')
+        return (0xFFFFFF); // White (wall)
+    if (cell == '0')
+        return (0x000000); // Black (empty space)
+    if (cell == 'N')
+        return (0xFF0000); // Red (player position)
+    return (0x0000FF); // Blue (unknown)
 }
 
 void draw_horizontal_line(t_img *img, int *x, int *y, int *p, int dx, int dy, int x2, int y2, int color)
@@ -65,6 +69,24 @@ void draw_line(t_img *img, int x1, int y1, int x2, int y2, int color)
             draw_vertical_line(img, &x, &y, &p, dx, dy, x2, y2, color);
         else
             draw_vertical_line(img, &x, &y, &p, dx, dy, x2, y2, color);
+    }
+}
+
+void draw_rectangle(t_img *img, int x, int y, int width, int height, int color, int img_width, int img_height)
+{
+    int i;
+    int j;
+
+    i = 0;
+    while (i < height)
+    {
+        j = 0;
+        while (j < width)
+        {
+            put_pixel_to_image(img, x + j, y + i, color, img_width, img_height);
+            j++;
+        }
+        i++;
     }
 }
 

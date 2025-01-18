@@ -12,6 +12,7 @@
 
 #include "../../inc/linux_inc/cub3d.h"
 
+
 int ft_strlen(const char *str)
 {
 	int i=0;

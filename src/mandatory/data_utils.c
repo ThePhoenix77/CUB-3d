@@ -1,10 +1,10 @@
 #include "cub3d.h"
 
+/*modification: some cases are handled in the parse part*/
 bool is_player_cell(char cell)
 {
     return (cell == 'N' || cell == 'S' || cell == 'E' || cell == 'W');
 }
-
 
 void set_player_direction(char cell, t_player *player)
 {
