@@ -54,6 +54,9 @@
 #define MINIMAP_SCALE 4
 #define TRAIL_MAX_SIZE 100 
 
+#define CEILING_COLOR 0x87CEEB // Sky blue
+#define FLOOR_COLOR 0x8B4513 // rown
+
 // --------------------
 // Structures
 // --------------------
@@ -183,6 +186,7 @@ void raycast(t_data *data);
 void render_minimap(t_data *data);
 void draw_rectangle(t_img *img, int x, int y, int width, int height, int color, int img_width, int img_height);
 void render_3d_view(t_data *data);
+void render_ceiling_and_floor(t_data *data);
 
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
 

@@ -58,7 +58,7 @@ void raycast(t_data *data)
     int x;
     
     x = 0;
-    clear_screen(data, 0x000000);
+    // clear_screen(data, 0x000000);
     while (x < data->img.width)
     {
         initialize_ray(&ray, data, x);

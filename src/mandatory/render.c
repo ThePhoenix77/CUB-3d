@@ -154,9 +154,80 @@ void render_minimap(t_data *data)
     draw_player_on_minimap(data);
 }
 
+// void render_ceiling_and_floor(t_data *data)
+// {
+//     int x;
+//     int y;
+
+//     y = 0;
+//     while (y < data->map.height)
+//     {
+//         x = 0;
+//         while (x < data->map.width)
+//         {
+//             // draw_pixel(&data->img, x, y, CEILING_COLOR);
+//             put_pixel_to_image(&data->img, x, y, CEILING_COLOR, data->map.width, data->map.height);
+//             x++;
+//         }
+//         y++;
+//     }
+//     y = data->map.height / 2;
+//     while (y < data->map.height)
+//     {
+//         x = 0;
+//         while (x < data->map.width)
+//         {
+//             // draw_pixel(&data->img, x, y, FLOOR_COLOR);
+//             put_pixel_to_image(&data->img, x, y, FLOOR_COLOR, data->map.width, data->map.height);
+//             x++;
+//         }
+//         y++;
+//     }
+// }
+
+void render_ceiling_and_floor(t_data *data)
+{
+    int x, y;
+    double ray_dir_x0;
+    double ray_dir_y0;
+    double ray_dir_x1;
+    double ray_dir_y1;
+
+    // Direction of the rays at the edges of the screen
+    ray_dir_x0 = data->player.dir_x - data->player.plane_x;
+    ray_dir_y0 = data->player.dir_y - data->player.plane_y;
+    ray_dir_x1 = data->player.dir_x + data->player.plane_x;
+    ray_dir_y1 = data->player.dir_y + data->player.plane_y;
+    y = 0;
+    while (y < data->img.height)
+    {
+        x = 0;
+        double row_distance = 0.5 * data->img.height / (data->img.height - y);
+        // Calculate the floor and ceiling ray directions
+        double floor_step_x = row_distance * (ray_dir_x1 - ray_dir_x0) / data->img.width;
+        double floor_step_y = row_distance * (ray_dir_y1 - ray_dir_y0) / data->img.width;
+        double floor_x = data->player.x + row_distance * ray_dir_x0;
+        double floor_y = data->player.y + row_distance * ray_dir_y0;
+        while (x < data->img.width)
+        {
+            // Move to the next floor/ceiling pixel
+            floor_x += floor_step_x;
+            floor_y += floor_step_y;
+            if (y < data->img.height / 2)
+                draw_pixel(&data->img, x, y, 0x87CEEB); // Sky blue for the ceiling
+            else
+                draw_pixel(&data->img, x, y, 0x8B4513); // Brown for the floor
+
+            x++;
+        }
+        y++;
+    }
+}
+
 void render(t_data *data)
 {
     clear_img(data);
+    render_ceiling_and_floor(data);
     raycast(data);
     render_minimap(data);
     mlx_put_image_to_window(data->mlx, data->win, data->img.img_ptr, 0, 0);
