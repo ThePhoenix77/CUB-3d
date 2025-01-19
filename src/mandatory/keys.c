@@ -75,7 +75,7 @@ int key_press(int key, t_data *data)
     }
     else
         printf("Key Pressed: Unknown Key (key: %d)\n", key);
-    clear_img(data);
+    // clear_img(data);
     return (0);
 }
 
@@ -113,7 +113,7 @@ int key_release(int key, t_data *data)
     }
     else
         printf("Key Released: Unknown Key (key: %d)\n", key);
-    clear_img(data);
+    // clear_img(data);
     return (0);
 }
 

@@ -56,6 +56,7 @@
 
 #define CEILING_COLOR 0x87CEEB // Sky blue
 #define FLOOR_COLOR 0x8B4513 // rown
+#define MINIMAP_FRAME_COLOR 0xFFD700 // rown
 
 // --------------------
 // Structures
@@ -186,6 +187,15 @@ void raycast(t_data *data);
 void render_minimap(t_data *data);
 void draw_rectangle(t_img *img, int x, int y, int width, int height, int color, int img_width, int img_height);
 void render_3d_view(t_data *data);
+void render_ceiling_and_floor(t_data *data);
+
+
+                                /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
+
+// Minimap
+void draw_minimap_tiles(t_data *data, int start_x, int start_y, int end_x, int end_y);
+void draw_player_on_minimap(t_data *data);
+void calculate_viewport(t_data *data, int *start_x, int *start_y, int *end_x, int *end_y);
 void render_ceiling_and_floor(t_data *data);
 
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
