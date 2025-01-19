@@ -12,21 +12,13 @@
 
 #include "../../inc/linux_inc/cub3d.h"
 
-
-int ft_strlen(const char *str)
-{
-	int i=0;
-	while (str[i])
-		i++;
-	return (i);
-}
 char	*ft_substr2(char *s, unsigned int start, size_t len)
 {
 	size_t	i;
 	char	*str;
 
 	len = ft_strlen(s + start);
-	str = malloc((len + 1) * sizeof(char));
+	str = (char *)ft_malloc((len + 1) * sizeof(char), ALLOC);
 	if (!str)
 		return (NULL);
 	i = 0;
@@ -65,7 +57,7 @@ char	*ft_strdup(char *s1)
 
 	i = 0;
 	len = ft_strlen(s1);
-	p = malloc(len + 1);
+	p = (char *)ft_malloc(len + 1, ALLOC);
 	if (!p)
 		return (NULL);
 	while (i < len)

@@ -45,11 +45,12 @@ void data_init(t_data *data)
         quit("Error: MiniLibX initialization failed!");
     // Initialize the map
     /*modification: read & add the map*/
-    map_init(&data->map, "/home/tboussad/work/CUB-3d/maps/test.map");
+    // map_init(&data->map, "/home/tboussad/work/CUB-3d/maps/test.map");
     /*modification: map parsing*/    
     if (data->map.grid == NULL)
         quit("Error: Map initialization failed!");
     // Create a new window
+    print_data(data);
     data->win = mlx_new_window(data->mlx, MAP_WIDTH, MAP_HEIGHT, "Cub3D");
     if (!data->win)
         quit("Error: Window creation failed!");
@@ -58,4 +59,5 @@ void data_init(t_data *data)
     init_player_trail(&data->player_trail);
     // Initialize the image
     init_img(data);
+    ft_malloc(1, FREE);
 }

@@ -6,12 +6,12 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 17:13:32 by aragragu          #+#    #+#             */
-/*   Updated: 2024/12/31 20:40:56 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/01/04 19:56:52 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/linux_inc/cub3d.h"
-/*
+
 int	is_map_line(char *str)
 {
 	int		i;
@@ -85,7 +85,6 @@ void	validat_map(char **map)
 		my_perror(1, "error: to many player start position\n");
 }
 
-
 void	fill_map(char **str, t_parsing *info)
 {
 	int	i;
@@ -101,42 +100,60 @@ void	fill_map(char **str, t_parsing *info)
 	}
 	str[x] = NULL;
 }
-
 void	parse_map(t_data *data)
 {
 	int		map_lenght;
 
 	map_lenght = ft_strlen2(data->info->file_lines + data->info->map_start_index);
-	data->map = malloc(sizeof(char *) * (map_lenght + 1));
-	if (!data->map)
+	data->map.grid = (char **)ft_malloc(((sizeof(char *) * (map_lenght + 1))), ALLOC);
+	if (!data->map.grid)
 		my_perror(1, "malloc error\n");
-	fill_map(data->map, data->info);
-	validat_map(data->map);
-	check_map_surrending(data->map);
-	check_inside_map(data->map);
+	fill_map(data->map.grid, data->info);
+	validat_map(data->map.grid);
+	check_map_surrending(data->map.grid);
+	check_inside_map(data->map.grid);
 }
 
-void	fill_texture(char *str, char **texture, int *count)
+
+void	fill_textures(char *str, char **texture, int *count)
 {
-	char **ptr;
 	int		fd;
 
 	fd = 0;
-	ptr = ft_split(str, ' ');
-	(*count)++;
-	if (ft_strlen2(ptr) == 2)
-	{
-		fd = open(ptr[1], O_RDONLY);
-		if (fd == -1)
-			my_perror(1, "error: can't open texture file\n");
-		else
-			*texture = ft_strdup(ptr[1]);
-	}
+	fd = open(str, O_RDONLY);
+	if (fd == -1)
+		my_perror(1, "error: can't open texture file\n");
 	else
-		my_perror(1, "error: invaid map config\n");
-	free_str(ptr);
+		*texture = ft_strdup(str);
+	(*count)++;
 }
 
+
+
+void	check_texture(char *str, t_textures *textures, int *count)
+{
+	char **ptr;
+
+	ptr = ft_split2(str);
+	if (ptr[0])
+	{
+		if (!ft_strncmp(ptr[0], "NO", ft_strlen(ptr[0])) && ft_strlen2(ptr) == 2)
+			fill_textures(ptr[1], &textures->norh, count);
+		else if (!ft_strncmp(ptr[0], "EA", ft_strlen(ptr[0])) && ft_strlen2(ptr) == 2)
+			fill_textures(ptr[1], &textures->east, count);
+		else if (!ft_strncmp(ptr[0], "WE", ft_strlen(ptr[0])) && ft_strlen2(ptr) == 2)
+			fill_textures(ptr[1], &textures->west, count);
+		else if (!ft_strncmp(ptr[0], "SO", ft_strlen(ptr[0])) && ft_strlen2(ptr) == 2)
+			fill_textures(ptr[1], &textures->south, count);
+		else if (!ft_strncmp(ptr[0], "F", ft_strlen(ptr[0])))
+			fill_color(ptr, &textures->floor, count);
+		else if (!ft_strncmp(ptr[0], "C", ft_strlen(ptr[0])))
+			fill_color(ptr, &textures->ceiling, count);
+		else
+			check_rest(ptr);
+	}
+	free_str(ptr);
+}
 
 int		check_colors(char **str)
 {
@@ -153,77 +170,94 @@ int		check_colors(char **str)
 }
 
 
-void	fill_floor(char *str, char **texture, int *count)
+int		parse_color(char *str)
 {
-	char **ptr;
-	char **gtr;
+	char		**ptr;
+	int			i;
 
-	ptr = ft_split(str, ' ');
-	gtr = NULL;
-	(*count)++;
-	if (ft_strlen2(ptr) == 2)
+	i = 0;
+	ptr = ft_split(str, ',');
+	if (ft_strlen2(ptr) == 3)
 	{
-		gtr = ft_split(ptr[1], ',');
-		if (gtr && ft_strlen2(gtr) == 3)
+		while (ptr[i])
 		{
-			if (!check_colors(gtr))
-			{
-				puts("ok");
-				my_perror(1, "error: invalid map config\n");
-			}
-			*texture = ft_strdup(ptr[1]);
+			if (!is_num(ptr[i]) || !(ft_atoi(ptr[i]) >= 0 && ft_atoi(ptr[i]) <= 255))
+				return (0);
+			i++;
 		}
 	}
 	else
-		my_perror(1, "error: invaid map config\n");
-	free_str(ptr);
-	free_str(gtr);
+		my_perror(1, "error: color count is not accurate\n");
+	return (1);
 }
 
-void	fill_ceiling(char *str, char **texture, int *count)
+
+
+void	fill_color(char **str, char **texture, int *count)
+{
+	char	*color;
+	int		i;
+
+	i = 0;
+	color = ft_strdup("");
+	while (str[i])
+	{
+		if (is_num2(str[i]))
+			color = ft_strjoin(color, str[i]);
+		i++;
+	}
+	if (!parse_color(color))
+		my_perror(1, "error: invalid colors\n");
+	*texture = color;
+	(*count)++;
+}
+
+
+
+void	fill_ceiling(char **str, char **texture, int *count)
 {
 	char **ptr;
-	char **gtr;
 
-	ptr = ft_split(str, ' ');
-	gtr = NULL;
-	(*count)++;
-	if (ft_strlen2(ptr) == 2)
+	ptr = ft_split(str[1], ',');
+	if (ft_strlen2(ptr) == 3)
 	{
-		gtr = ft_split(ptr[1], ',');
-		if (gtr && ft_strlen2(gtr) == 3)
-		{
-			if (!check_colors(gtr))
-				my_perror(1, "error: invalid map config\n");
-			*texture = ft_strdup(ptr[1]);
-		}
+		if (!check_colors(ptr))
+			my_perror(1, "error: invalid map config\n");
+		*texture = ft_strdup(str[1]);
+		(*count)++;
 	}
 	else
 		my_perror(1, "error: invaid map config\n");
 	free_str(ptr);
-	free_str(gtr);
 }
 
 int wrong_char(char c)
 {
-	if (c == '1' || c == '0' || c == ' ' || c == '\n' || c == 'E' || c == 'W' || c == 'S' || c == 'N')
+	if (c == '1' || c == '0' || c == '\n' || c == 'E' || c == 'W' || c == 'S' || c == 'N')
 		return (1);
 	else
 		return (0);
 }
 
 
-void	check_rest(char	*str)
+void	check_rest(char	**str)
 {
 	int		i;
+	int		j;
 
 	i = 0;
+	j = 0;
 	if (!str[0])
 		return;
 	while (str[i])
 	{
-		if (!wrong_char(str[i]))
-			my_perror(1, "error: invalid map config\n");
+		j = 0;
+		while (str[i][j])
+		{
+			if (!wrong_char(str[i][j]))
+				my_perror(1, "error: invalid map config\n");
+			j++;
+		}
 		i++;
 	}
 }
@@ -287,5 +321,3 @@ void	get_file_lines(char *str, t_parsing *info)
 	}
 	info->file_lines[count] = NULL;
 }
-
-*/

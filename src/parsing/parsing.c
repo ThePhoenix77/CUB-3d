@@ -6,13 +6,12 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 13:58:49 by aragragu          #+#    #+#             */
-/*   Updated: 2024/12/31 21:11:08 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/01/04 18:57:58 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/linux_inc/cub3d.h"
 
-/*
 void	my_perror(int status, char *str)
 {
 	write(2, str, ft_strlen(str));
@@ -66,16 +65,16 @@ char	*read_map(int fd)
 {
 	char	*line;
 	char	*whole_map;
-	char	*tmp;
+	// char	*tmp;
 
 	line = get_next_line(fd);
 	whole_map = ft_strdup("");
 	while (line)
 	{
-		tmp = whole_map;
+		// tmp = whole_map;
 		whole_map = ft_strjoin(whole_map, line);
-		free(tmp);
-		free(line);
+		// free(tmp);
+		// free(line);
 		line = get_next_line(fd);
 	}
 	return (whole_map);
@@ -93,6 +92,35 @@ void print_2d_array(char **array) {
     }
 }
 
+// void	parse_data(t_textures *textures, t_parsing *info)
+// {
+// 	int		i;
+// 	int		count;
+
+// 	i = 0;
+// 	count = 0;
+// 	while (info->file_lines[i] && i < info->map_start_index)
+// 	{
+// 		if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "NO", 2))
+// 			fill_texture(info->file_lines[i], &textures->norh, &count);
+// 		else if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "EA", 2))
+// 			fill_texture(info->file_lines[i], &textures->east, &count);
+// 		else if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "WE", 2))
+// 			fill_texture(info->file_lines[i], &textures->west, &count);
+// 		else if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "SO", 2))
+// 			fill_texture(info->file_lines[i], &textures->south, &count);
+// 		else if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "F", 1))
+// 			fill_floor(info->file_lines[i], &textures->floor, &count);
+// 		else if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "C", 1))
+// 			fill_ceiling(info->file_lines[i], &textures->ceiling, &count);
+// 		else
+// 			check_rest(info->file_lines[i]);
+// 		i++;
+// 	}
+// 	if (count > 6 || count != 6)
+// 		my_perror(1, "error: to much element\n");
+// }
+
 void	parse_data(t_textures *textures, t_parsing *info)
 {
 	int		i;
@@ -100,26 +128,13 @@ void	parse_data(t_textures *textures, t_parsing *info)
 
 	i = 0;
 	count = 0;
-	while (info->file_lines[i] && i < info->map_start_index)
+	while (info->file_lines[i])
 	{
-		if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "NO", 2))
-			fill_texture(info->file_lines[i], &textures->norh, &count);
-		else if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "EA", 2))
-			fill_texture(info->file_lines[i], &textures->east, &count);
-		else if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "WE", 2))
-			fill_texture(info->file_lines[i], &textures->west, &count);
-		else if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "SO", 2))
-			fill_texture(info->file_lines[i], &textures->south, &count);
-		else if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "F", 1))
-			fill_floor(info->file_lines[i], &textures->floor, &count);
-		else if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "C", 1))
-			fill_ceiling(info->file_lines[i], &textures->ceiling, &count);
-		else
-			check_rest(info->file_lines[i]);
+		check_texture(info->file_lines[i], textures, &count);
 		i++;
 	}
-	if (count > 6 || count != 6)
-		my_perror(1, "error: to much element\n");
+	if (count != 6)
+		my_perror(1, "error: incorrect number of elements\n");
 }
 
 
@@ -136,6 +151,7 @@ void print_textures(t_textures textures)
 
 void print_map(char **map)
 {
+	// printf("-->:\n");
     printf("Map:\n");
     if (map)
     {
@@ -158,7 +174,7 @@ void print_data(t_data *data)
         return;
     }
     print_textures(data->textures);
-    print_map(data->map);
+    print_map(data->map.grid);
 }
 
 
@@ -181,15 +197,18 @@ void print_file_lines(t_parsing *parsing)
     }
 }
 
+
+
+
 void	store_data(t_data *data, int fd)
 {
 	char	*line;
 
 	line =	read_map(fd);
-	if (!line[0] || line[0] == '\n' || line[0] == ' ')
+	if (!line[0])
 		my_perror(1, "error: invalid map config\n");
 	data->info->file_lenght = file_lenght(line);
-	data->info->file_lines = malloc(sizeof(char*) * data->info->file_lenght);
+	data->info->file_lines = (char **)ft_malloc((sizeof(char*) * (data->info->file_lenght + 1)), ALLOC);
 	if (!data->info->file_lines)
 		my_perror(1, "malloc error\n");
 	get_file_lines(line, data->info);
@@ -203,11 +222,9 @@ void	store_data(t_data *data, int fd)
 
 void	file_parsing(t_data *data, char *str)
 {
-	data->info = malloc(sizeof(t_parsing));
+	data->info = (t_parsing *)ft_malloc((sizeof(t_parsing)), ALLOC);
 	if (!data->info)
 		my_perror(1, "error: malloc failed\n");
 	data->info->fd = check_file(str);
 	store_data(data, data->info->fd);
 }
-
-*/

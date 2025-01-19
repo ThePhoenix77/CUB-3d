@@ -6,12 +6,12 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:03:34 by aragragu          #+#    #+#             */
-/*   Updated: 2024/12/26 16:50:47 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/01/04 19:55:29 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/linux_inc/cub3d.h"
-/*
+
 char	*ft_strjoin(char *s1, char *s2)
 {
 	char			*ptr;
@@ -20,7 +20,7 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	if (!s1 || !s2)
 		return (NULL);
-	ptr = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	ptr = (char *)ft_malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1),ALLOC);
 	if (!ptr)
 		return (NULL);
 	i = 0;
@@ -58,7 +58,7 @@ void	*ft_calloc(size_t count, size_t size)
 
 	if (count > 0 && size > 9223372036854775807ULL / count)
 		return (0);
-	data = malloc(count * size);
+	data = ft_malloc(count * size, ALLOC);
 	if (!data)
 		return (NULL);
 	ft_bzero(data, (count * size));
@@ -134,6 +134,20 @@ int	is_num(char *str)
 	return (1);
 }
 
+int	is_num2(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!((str[i] >= '0' && str[i] <= '9') || str[i] == ',' || str[i] == '-'))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 static int	my_ft_strncmp(const char *s1, const char *s2, size_t n, size_t len)
 {
 	size_t	i;
@@ -194,7 +208,7 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 		return (ft_calloc(sizeof(char), 1));
 	if (len >= (ft_strlen(s) - start))
 		return (ft_strdup(s + start));
-	ptr = (char *)malloc(sizeof(char) * (len + 1));
+	ptr = (char *)ft_malloc(sizeof(char) * (len + 1), ALLOC);
 	if (!ptr)
 		return (NULL);
 	ft_strlcpy(ptr, s + start, len + 1);
@@ -216,4 +230,29 @@ int		only_space(char *str)
 	}
 	return (1);
 }
-*/
+
+
+char	*ft_strtrim(char const *s1, char const *set)
+{
+	size_t			start;
+	size_t			end;
+	char			*ptr;
+
+	if (s1 == NULL)
+		return (NULL);
+	if (s1[0] == '\0')
+		return (ft_strdup(""));
+	if (s1 == 0 || set == 0)
+		return (NULL);
+	start = 0;
+	end = ft_strlen(s1);
+	while (s1[start] && ft_strchr(set, s1[start]))
+		start++;
+	while (s1[end - 1] && ft_strchr(set, s1[end - 1]) && end > start)
+		end--;
+	ptr = (char *)ft_malloc(sizeof(char) * (end - start + 1), ALLOC);
+	if (!ptr)
+		return (NULL);
+	ft_strlcpy(ptr, s1 + start, end - start + 1);
+	return (ptr);
+}

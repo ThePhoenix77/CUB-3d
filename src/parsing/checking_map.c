@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/linux_inc/cub3d.h"
-/*
+
 int     check_first_and_last(char *str)
 {
     int     i;
@@ -99,4 +99,3 @@ void    check_inside_map(char **map)
         i++;
     }
 }
-*/

@@ -67,7 +67,7 @@ void map_init(t_map *map, const char *map_file) {
             char **new_grid = (char **)realloc(map->grid, grid_size * sizeof(char *));
             if (!new_grid) {
                 free(line);
-                map_free(map);
+                // map_free(map);
                 perror("error: failed to reallocate memory for map grid!");
                 close(fd);
                 exit(EXIT_FAILURE);
@@ -79,7 +79,7 @@ void map_init(t_map *map, const char *map_file) {
         map->grid[height] = strdup(line);
         if (!map->grid[height]) {
             free(line);
-            map_free(map);
+            // map_free(map);
             perror("error: failed to duplicate line!");
             close(fd);
             exit(EXIT_FAILURE);
@@ -104,7 +104,7 @@ void map_init(t_map *map, const char *map_file) {
     // Handle empty map case
     if (height == 0) {
         perror("error: empty map file!");
-        free(map->grid);
+        // free(map->grid);
         map->grid = NULL;
         map->width = 0;
         map->height = 0;

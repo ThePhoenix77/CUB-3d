@@ -21,7 +21,7 @@ static char	*ft_strjoin_2(char *s1, char *s2)
 	if (s1 && s2)
 	{
 		j = 0;
-		newstr = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+		newstr = malloc((ft_strlen(s1) + ft_strlen(s2) + 1));
 		if (!newstr)
 			return (NULL);
 		while (s1[j])
@@ -97,7 +97,7 @@ static char	*gline(char *aftern)
 		i++;
 	if (aftern[i] == '\n')
 		i++;
-	line = malloc(i + 1);
+	line = (char *)ft_malloc(i + 1, ALLOC);
 	if (!line)
 		return (aftern = NULL, NULL);
 	i = 0;
@@ -129,7 +129,8 @@ char	*get_next_line(int fd)
 		aftern = NULL;
 		return (NULL);
 	}
-	buffer = malloc((size_t)BUFFER_SIZE + 1);
+	// buffer = (char *)ft_malloc(BUFFER_SIZE + 1, ALLOC);
+	buffer = (char *)malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (free(aftern), aftern = NULL, NULL);
 	aftern = readline(fd, buffer, aftern);
