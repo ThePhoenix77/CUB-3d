@@ -24,7 +24,7 @@ void player_dir(t_data *data, int player_x, int player_y)
         dot_x = player_x + (int)(dx * i);
         dot_y = player_y + (int)(dy * i);
         color = 0x00FF00 - (0x000FFF * i); // Gradually fade the color
-        draw_rectangle(&data->img, dot_x - 1, dot_y - 1, 2, 2, color, data->map.width * CELL_SIZE, data->map.height * CELL_SIZE);
+        draw_rectangle(&data->img, dot_x - 1, dot_y - 1, 2, 2, color, MAP_WIDTH, MAP_HEIGHT);
         i++;
     }
 }

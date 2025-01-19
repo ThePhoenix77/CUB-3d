@@ -32,12 +32,12 @@ void clear_img(t_data *data)
 
     i = 0;
     color = 0x000000;
-    while (i < data->map.width)
+    while (i < MAP_WIDTH)
     {
         j = 0;
-        while (j < data->map.height)
+        while (j < MAP_HEIGHT)
         {
-            put_pixel_to_image(&data->img, i, j, color, data->map.width, data->map.height);
+            put_pixel_to_image(&data->img, i, j, color, MAP_WIDTH, MAP_HEIGHT);
             j++;
         }
         i++;

@@ -44,6 +44,9 @@
 
 #define PI 3.141592653589793
 
+#define MAP_WIDTH 2400
+#define MAP_HEIGHT 800
+
 #define MINIMAP_CENTER_X 100 // Adjust as needed for your window dimensions
 #define MINIMAP_CENTER_Y 100
 #define MINIMAP_TILE_SIZE 10
