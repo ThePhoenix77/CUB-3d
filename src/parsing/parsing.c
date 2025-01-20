@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 13:58:49 by aragragu          #+#    #+#             */
-/*   Updated: 2025/01/04 18:57:58 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/01/20 19:11:59 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,18 +65,16 @@ char	*read_map(int fd)
 {
 	char	*line;
 	char	*whole_map;
-	// char	*tmp;
 
 	line = get_next_line(fd);
 	whole_map = ft_strdup("");
 	while (line)
 	{
-		// tmp = whole_map;
 		whole_map = ft_strjoin(whole_map, line);
-		// free(tmp);
-		// free(line);
+		free(line);
 		line = get_next_line(fd);
 	}
+	free(line);
 	return (whole_map);
 }
 
@@ -217,7 +215,7 @@ void	store_data(t_data *data, int fd)
 		my_perror(1, "error: incorrect map config\n");
 	parse_data(&data->textures, data->info);
 	parse_map(data);
-	print_data(data);
+	// print_data(data);
 }
 
 void	file_parsing(t_data *data, char *str)

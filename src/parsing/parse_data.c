@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 17:13:32 by aragragu          #+#    #+#             */
-/*   Updated: 2025/01/04 19:56:52 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/01/20 19:12:03 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,6 @@ void	check_texture(char *str, t_textures *textures, int *count)
 		else
 			check_rest(ptr);
 	}
-	free_str(ptr);
 }
 
 int		check_colors(char **str)

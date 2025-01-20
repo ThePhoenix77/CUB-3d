@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:00:58 by aragragu          #+#    #+#             */
-/*   Updated: 2024/12/26 12:53:10 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/01/20 19:24:43 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_substr2(char *s, unsigned int start, size_t len)
 	char	*str;
 
 	len = ft_strlen(s + start);
-	str = (char *)ft_malloc((len + 1) * sizeof(char), ALLOC);
+	str = malloc((len + 1) * sizeof(char));
 	if (!str)
 		return (NULL);
 	i = 0;
@@ -58,6 +58,26 @@ char	*ft_strdup(char *s1)
 	i = 0;
 	len = ft_strlen(s1);
 	p = (char *)ft_malloc(len + 1, ALLOC);
+	if (!p)
+		return (NULL);
+	while (i < len)
+	{
+		p[i] = s1[i];
+		i++;
+	}
+	p[i] = '\0';
+	return (p);
+}
+
+char	*ft_strdup2(char *s1)
+{
+	int		len;
+	char	*p;
+	int		i;
+
+	i = 0;
+	len = ft_strlen(s1);
+	p = malloc(len + 1);
 	if (!p)
 		return (NULL);
 	while (i < len)

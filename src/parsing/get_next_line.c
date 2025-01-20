@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 16:57:40 by aragragu          #+#    #+#             */
-/*   Updated: 2024/12/26 12:53:37 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/01/20 19:24:35 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	*readline(int fd, char *buffer, char *aftern)
 			break ;
 		buffer[rd] = '\0';
 		if (!aftern)
-			aftern = ft_strdup("");
+			aftern = ft_strdup2("");
 		tmp = aftern;
 		aftern = ft_strjoin_2(tmp, buffer);
 		free(tmp);
@@ -97,7 +97,7 @@ static char	*gline(char *aftern)
 		i++;
 	if (aftern[i] == '\n')
 		i++;
-	line = (char *)ft_malloc(i + 1, ALLOC);
+	line = malloc(i + 1);
 	if (!line)
 		return (aftern = NULL, NULL);
 	i = 0;

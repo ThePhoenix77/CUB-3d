@@ -298,6 +298,7 @@ char    *ft_strtrim(char const *s1, char const *set);
 void    fill_color(char **str, char **texture, int *count);
 int        is_num2(char *str);
 void print_map(char **map);
+char	*ft_strdup2(char *s1);
 // void	my_perror(int status, char *str);
 // int		ft_strncmp(const char *s1, const char *s2, int n);
 // int	 	ft_strlen(const char *str);

@@ -14,3 +14,16 @@ Parsing:
     check if the map is Valid
     Space char validity
     Map is indeed closed by walls
+
+
+
+
+
+
+
+
+
+
+
+
+checki issue

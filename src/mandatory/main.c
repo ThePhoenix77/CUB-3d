@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
         mlx_hook(data.win, 17, 0, handle_exit, NULL);
 
         mlx_loop(data.mlx);
+        ft_malloc(0, FREE);
 		puts("done");
 	}
 	else
