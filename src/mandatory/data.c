@@ -1,4 +1,4 @@
-#include "cub3d.h"
+# include "../../inc/linux_inc/cub3d.h"
 
 void init_player_defaults(t_player *player)
 {
@@ -59,5 +59,4 @@ void data_init(t_data *data)
     init_player_trail(&data->player_trail);
     // Initialize the image
     init_img(data);
-    ft_malloc(1, FREE);
 }

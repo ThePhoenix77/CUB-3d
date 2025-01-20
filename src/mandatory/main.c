@@ -1,4 +1,4 @@
-# include "cub3d.h"
+# include "../../inc/linux_inc/cub3d.h"
 
 // /home/tboussad/work/CUB-3d/maps/test.map
 

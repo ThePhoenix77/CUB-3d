@@ -1,49 +1,43 @@
-yo
-hanta checki hadchi m3aak, i mean gha 7yd l free li dyar
+hada howa l error li taytl3
 
-==91876==ERROR: AddressSanitizer: heap-use-after-free on address 0x60c000000d58 at pc 0x55ff1574eaef bp 0x7ffe149599d0 sp 0x7ffe149599c0
-READ of size 8 at 0x60c000000d58 thread T0
-    #0 0x55ff1574eaee in perform_dda (/home/aragragu/Desktop/CUB-3d/cub3D+0xaaee)
-    #1 0x55ff1574dd43 in raycast (/home/aragragu/Desktop/CUB-3d/cub3D+0x9d43)
-    #2 0x55ff1574ec43 in render (/home/aragragu/Desktop/CUB-3d/cub3D+0xac43)
-    #3 0x55ff1574fb9b in game_loop (/home/aragragu/Desktop/CUB-3d/cub3D+0xbb9b)
-    #4 0x55ff1575730c in mlx_loop (/home/aragragu/Desktop/CUB-3d/cub3D+0x1330c)
-    #5 0x55ff1574b6c9 in main (/home/aragragu/Desktop/CUB-3d/cub3D+0x76c9)
-    #6 0x7fbd08d89d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
-    #7 0x7fbd08d89e3f in __libc_start_main_impl ../csu/libc-start.c:392
-    #8 0x55ff157489c4 in _start (/home/aragragu/Desktop/CUB-3d/cub3D+0x49c4)
 
-0x60c000000d58 is located 88 bytes inside of 120-byte region [0x60c000000d00,0x60c000000d78)
-freed by thread T0 here:
-    #0 0x7fbd09279537 in __interceptor_free ../../../../src/libsanitizer/asan/asan_malloc_linux.cpp:127
-    #1 0x55ff1574ac4c in ft_free_all (/home/aragragu/Desktop/CUB-3d/cub3D+0x6c4c)
-    #2 0x55ff1574ae95 in ft_malloc (/home/aragragu/Desktop/CUB-3d/cub3D+0x6e95)
-    #3 0x55ff1574983a in data_init (/home/aragragu/Desktop/CUB-3d/cub3D+0x583a)
-    #4 0x55ff1574b557 in main (/home/aragragu/Desktop/CUB-3d/cub3D+0x7557)
-    #5 0x7fbd08d89d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+==101271==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x604000000475 at pc 0x55b8f4d2dad0 bp 0x7fff5d975c70 sp 0x7fff5d975c60
+READ of size 1 at 0x604000000475 thread T0
+    #0 0x55b8f4d2dacf in draw_minimap_tiles (/home/aragragu/Desktop/CUB-3d/cub3D+0x7acf)
+    #1 0x55b8f4d2df18 in render_minimap (/home/aragragu/Desktop/CUB-3d/cub3D+0x7f18)
+    #2 0x55b8f4d30c40 in render (/home/aragragu/Desktop/CUB-3d/cub3D+0xac40)
+    #3 0x55b8f4d31b8c in game_loop (/home/aragragu/Desktop/CUB-3d/cub3D+0xbb8c)
+    #4 0x55b8f4d392fc in mlx_loop (/home/aragragu/Desktop/CUB-3d/cub3D+0x132fc)
+    #5 0x55b8f4d2d6ba in main (/home/aragragu/Desktop/CUB-3d/cub3D+0x76ba)
+    #6 0x7feb490ded8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #7 0x7feb490dee3f in __libc_start_main_impl ../csu/libc-start.c:392
+    #8 0x55b8f4d2a9c4 in _start (/home/aragragu/Desktop/CUB-3d/cub3D+0x49c4)
 
-previously allocated by thread T0 here:
-    #0 0x7fbd09279887 in __interceptor_malloc ../../../../src/libsanitizer/asan/asan_malloc_linux.cpp:145
-    #1 0x55ff1574ae1b in ft_malloc (/home/aragragu/Desktop/CUB-3d/cub3D+0x6e1b)
-    #2 0x55ff1575317b in parse_map (/home/aragragu/Desktop/CUB-3d/cub3D+0xf17b)
-    #3 0x55ff15755620 in store_data (/home/aragragu/Desktop/CUB-3d/cub3D+0x11620)
-    #4 0x55ff15755786 in file_parsing (/home/aragragu/Desktop/CUB-3d/cub3D+0x11786)
-    #5 0x55ff1574b548 in main (/home/aragragu/Desktop/CUB-3d/cub3D+0x7548)
-    #6 0x7fbd08d89d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+0x604000000475 is located 0 bytes to the right of 37-byte region [0x604000000450,0x604000000475)
+allocated by thread T0 here:
+    #0 0x7feb495ce887 in __interceptor_malloc ../../../../src/libsanitizer/asan/asan_malloc_linux.cpp:145
+    #1 0x55b8f4d2ce0c in ft_malloc (/home/aragragu/Desktop/CUB-3d/cub3D+0x6e0c)
+    #2 0x55b8f4d33988 in ft_strdup (/home/aragragu/Desktop/CUB-3d/cub3D+0xd988)
+    #3 0x55b8f4d34fc8 in fill_map (/home/aragragu/Desktop/CUB-3d/cub3D+0xefc8)
+    #4 0x55b8f4d35224 in parse_map (/home/aragragu/Desktop/CUB-3d/cub3D+0xf224)
+    #5 0x55b8f4d37611 in store_data (/home/aragragu/Desktop/CUB-3d/cub3D+0x11611)
+    #6 0x55b8f4d37777 in file_parsing (/home/aragragu/Desktop/CUB-3d/cub3D+0x11777)
+    #7 0x55b8f4d2d539 in main (/home/aragragu/Desktop/CUB-3d/cub3D+0x7539)
+    #8 0x7feb490ded8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
 
-SUMMARY: AddressSanitizer: heap-use-after-free (/home/aragragu/Desktop/CUB-3d/cub3D+0xaaee) in perform_dda
+SUMMARY: AddressSanitizer: heap-buffer-overflow (/home/aragragu/Desktop/CUB-3d/cub3D+0x7acf) in draw_minimap_tiles
 Shadow bytes around the buggy address:
-  0x0c187fff8150: fa fa fa fa fa fa fa fa fd fd fd fd fd fd fd fd
-  0x0c187fff8160: fd fd fd fd fd fd fd fd fa fa fa fa fa fa fa fa
-  0x0c187fff8170: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
-  0x0c187fff8180: fa fa fa fa fa fa fa fa fd fd fd fd fd fd fd fd
-  0x0c187fff8190: fd fd fd fd fd fd fd fd fa fa fa fa fa fa fa fa
-=>0x0c187fff81a0: fd fd fd fd fd fd fd fd fd fd fd[fd]fd fd fd fa
-  0x0c187fff81b0: fa fa fa fa fa fa fa fa fd fd fd fd fd fd fd fd
-  0x0c187fff81c0: fd fd fd fd fd fd fd fd fa fa fa fa fa fa fa fa
-  0x0c187fff81d0: fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd fd
-  0x0c187fff81e0: fa fa fa fa fa fa fa fa 00 00 00 00 00 00 00 00
-  0x0c187fff81f0: 00 00 00 00 00 00 00 00 fa fa fa fa fa fa fa fa
+  0x0c087fff8030: fa fa fd fd fd fd fd fa fa fa fd fd fd fd fd fa
+  0x0c087fff8040: fa fa fd fd fd fd fd fa fa fa 00 00 00 00 05 fa
+  0x0c087fff8050: fa fa 00 00 00 00 05 fa fa fa 00 00 00 00 05 fa
+  0x0c087fff8060: fa fa 00 00 00 00 05 fa fa fa 00 00 00 00 02 fa
+  0x0c087fff8070: fa fa 00 00 00 00 02 fa fa fa 00 00 00 00 02 fa
+=>0x0c087fff8080: fa fa 00 00 00 00 02 fa fa fa 00 00 00 00[05]fa
+  0x0c087fff8090: fa fa 00 00 00 00 05 fa fa fa 00 00 00 00 05 fa
+  0x0c087fff80a0: fa fa 00 00 00 00 05 fa fa fa 00 00 00 00 02 fa
+  0x0c087fff80b0: fa fa 00 00 00 00 02 fa fa fa 00 00 00 00 00 00
+  0x0c087fff80c0: fa fa 00 00 00 00 00 00 fa fa 00 00 00 00 00 fa
+  0x0c087fff80d0: fa fa 00 00 00 00 01 fa fa fa fd fd fd fd fd fa
 Shadow byte legend (one shadow byte represents 8 application bytes):
   Addressable:           00
   Partially addressable: 01 02 03 04 05 06 07 
@@ -64,7 +58,7 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   Left alloca redzone:     ca
   Right alloca redzone:    cb
   Shadow gap:              cc
-==91876==ABORTING
+==101271==ABORTING
 
 
 
