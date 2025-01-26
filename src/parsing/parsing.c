@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 13:58:49 by aragragu          #+#    #+#             */
-/*   Updated: 2025/01/20 19:11:59 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/01/24 16:20:22 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,12 @@
 
 void	my_perror(int status, char *str)
 {
-	write(2, str, ft_strlen(str));
+	int		i;
+
+	i = 0;
+	i = write(2, str, ft_strlen(str));
+	if (i == -1)
+		perror("write failed");
 	exit(status);
 }
 

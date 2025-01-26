@@ -1,4 +1,4 @@
-#include "cub3d.h"
+# include "../../inc/linux_inc/cub3d.h"
 
 /*modification: some cases are handled in the parse part*/
 bool is_player_cell(char cell)
@@ -27,23 +27,23 @@ void set_player_plane(t_player *player)
 {
     if (player->dir_y == -1) // North
     {
-        player->plane_x = 0.66;
+        player->plane_x = 0.9;
         player->plane_y = 0;
     }
     else if (player->dir_y == 1) // South
     {
-        player->plane_x = -0.66;
+        player->plane_x = -0.9;
         player->plane_y = 0;
     }
     else if (player->dir_x == -1) // West
     {
         player->plane_x = 0;
-        player->plane_y = -0.66;
+        player->plane_y = -0.9;
     }
     else if (player->dir_x == 1) // East
     {
         player->plane_x = 0;
-        player->plane_y = 0.66;
+        player->plane_y = 0.9;
     }
 }
 

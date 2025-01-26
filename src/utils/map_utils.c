@@ -1,1 +1,1 @@
-#include "cub3d.h"
+# include "../../inc/linux_inc/cub3d.h"

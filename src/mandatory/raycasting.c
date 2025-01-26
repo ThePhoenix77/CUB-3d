@@ -1,4 +1,4 @@
-#include "cub3d.h"
+# include "../../inc/linux_inc/cub3d.h"
 
 void initialize_ray(t_ray *ray, t_data *data, int x)
 {

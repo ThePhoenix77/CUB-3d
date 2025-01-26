@@ -1,4 +1,4 @@
-#include "cub3d.h"
+# include "../../inc/linux_inc/cub3d.h"
 
 void move_forward(t_player *player, t_map *map)
 {

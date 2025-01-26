@@ -8,7 +8,7 @@ void init_player_defaults(t_player *player)
     player->right = 0;
     player->rotate_left = 0;
     player->rotate_right = 0;
-    player->move_speed = MOVE_SPEED;
+    player->move_speed = MOVE_SPEED;  //4
     player->rot_speed = 0.03;
 }
 

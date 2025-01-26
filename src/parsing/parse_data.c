@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 17:13:32 by aragragu          #+#    #+#             */
-/*   Updated: 2025/01/20 19:12:03 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/01/21 17:22:34 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,26 @@ void	fill_map(char **str, t_parsing *info)
 	}
 	str[x] = NULL;
 }
+
+
+
+
+int	map_lenghttttttttttttt(t_data *data)
+{
+	int i;
+	int lenght;
+
+	i = 0;
+	lenght = ft_strlen(data->map.grid[i]);
+	while (data->map.grid[i])
+	{
+		if (ft_strlen(data->map.grid[i]) > lenght)
+			lenght = ft_strlen(data->map.grid[i]);
+		i++;
+	}
+	return (lenght);
+}
+
 void	parse_map(t_data *data)
 {
 	int		map_lenght;
@@ -112,6 +132,8 @@ void	parse_map(t_data *data)
 	validat_map(data->map.grid);
 	check_map_surrending(data->map.grid);
 	check_inside_map(data->map.grid);
+	data->map.width = map_lenghttttttttttttt(data);
+	data->map.height = ft_strlen2(data->map.grid);
 }
 
 

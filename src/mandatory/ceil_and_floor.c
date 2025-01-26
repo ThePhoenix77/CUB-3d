@@ -1,4 +1,4 @@
-#include "cub3d.h"
+# include "../../inc/linux_inc/cub3d.h"
 
 void calculate_viewport(t_data *data, int *start_x, int *start_y, int *end_x, int *end_y)
 {
@@ -45,7 +45,7 @@ void ceil_and_floor_filling2(t_data *data, int x, int y, double row_distance)
     // Calculate the floor and ceiling ray directions
     floor_step_x = row_distance * (ray_dir_x1 - ray_dir_x0) / data->img.width;
     floor_step_y = row_distance * (ray_dir_y1 - ray_dir_y0) / data->img.width;
-    floor_x = data->player.x + row_distance * ray_dir_x0;
+    floor_x = data->player.x + row_distance * ray_dir_x0; // distance from the floor or cieling
     floor_y = data->player.y + row_distance * ray_dir_y0;
     ceil_and_floor_filling(data, x, y, floor_x, floor_y, floor_step_x, floor_step_y);
     

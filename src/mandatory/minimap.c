@@ -1,4 +1,4 @@
-#include "cub3d.h"
+# include "../../inc/linux_inc/cub3d.h"
 
 void player_dir(t_data *data, int player_x, int player_y)
 {
@@ -29,26 +29,29 @@ void player_dir(t_data *data, int player_x, int player_y)
     }
 }
 
+
 void draw_minimap_tiles(t_data *data, int start_x, int start_y, int end_x, int end_y)
 {
-    int y;
-    int tile_x;
-    int tile_y;
-
-    y = start_y;
+    int y = start_y;
     while (y <= end_y)
     {
         int x = start_x;
         while (x <= end_x)
         {
-            if (x >= 0 && y >= 0 && x < data->map.width && y < data->map.height)
+            if (x >= 0 && y >= 0 && y < data->map.height && 
+    data->map.grid[y] != NULL && x < (int)ft_strlen(data->map.grid[y]))
             {
-                tile_x = (x - start_x) * (CELL_SIZE / MINIMAP_SCALE);
-                tile_y = (y - start_y) * (CELL_SIZE / MINIMAP_SCALE);
-                draw_rectangle(&data->img, tile_x + 10, tile_y + 10,
-                    (CELL_SIZE / MINIMAP_SCALE), (CELL_SIZE / MINIMAP_SCALE),
+                int tile_x = (x - start_x) * (CELL_SIZE / MINIMAP_SCALE);
+                int tile_y = (y - start_y) * (CELL_SIZE / MINIMAP_SCALE);
+                draw_rectangle(
+                    &data->img,
+                    tile_x + 10,
+                    tile_y + 10,
+                    (CELL_SIZE / MINIMAP_SCALE),
+                    (CELL_SIZE / MINIMAP_SCALE),
                     color_cell_matching(data->map.grid[y][x]),
-                    MINIMAP_WIDTH, MINIMAP_HEIGHT
+                    MINIMAP_WIDTH,
+                    MINIMAP_HEIGHT
                 );
             }
             x++;
@@ -110,8 +113,13 @@ void render_minimap(t_data *data)
 {
     int viewport_start_x, viewport_start_y, viewport_end_x, viewport_end_y;
 
+    printf("1\n");
     calculate_viewport(data, &viewport_start_x, &viewport_start_y, &viewport_end_x, &viewport_end_y);
+    printf("2\n");
     draw_minimap_frame(data);
+    printf("3\n");
     draw_minimap_tiles(data, viewport_start_x, viewport_start_y, viewport_end_x, viewport_end_y);
+    printf("4\n");
     draw_player_on_minimap(data);
+    printf("5\n");
 }
