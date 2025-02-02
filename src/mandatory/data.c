@@ -9,7 +9,7 @@ void init_player_defaults(t_player *player)
     player->rotate_left = 0;
     player->rotate_right = 0;
     player->move_speed = MOVE_SPEED;  //4
-    player->rot_speed = 0.03;
+    player->rot_speed = ROT_SPEED;
 }
 
 void player_init(t_map *map, t_player *player)
@@ -50,10 +50,12 @@ void data_init(t_data *data)
     if (data->map.grid == NULL)
         quit("Error: Map initialization failed!");
     // Create a new window
-    print_data(data);
+    // print_data(data);
     data->win = mlx_new_window(data->mlx, MAP_WIDTH, MAP_HEIGHT, "Cub3D");
     if (!data->win)
         quit("Error: Window creation failed!");
+    images_init(data);
+    colors_init(data);
     // Initialize the player
     player_init(&data->map, &data->player);
     init_player_trail(&data->player_trail);

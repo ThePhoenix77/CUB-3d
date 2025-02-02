@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 17:13:32 by aragragu          #+#    #+#             */
-/*   Updated: 2025/01/21 17:22:34 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/02/02 18:20:16 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void	fill_textures(char *str, char **texture, int *count)
 
 
 
-void	check_texture(char *str, t_textures *textures, int *count)
+void	check_texture(char *str, t_game *game, int *count)
 {
 	char **ptr;
 
@@ -160,20 +160,133 @@ void	check_texture(char *str, t_textures *textures, int *count)
 	if (ptr[0])
 	{
 		if (!ft_strncmp(ptr[0], "NO", ft_strlen(ptr[0])) && ft_strlen2(ptr) == 2)
-			fill_textures(ptr[1], &textures->norh, count);
+			fill_textures(ptr[1], &game->norh, count);
 		else if (!ft_strncmp(ptr[0], "EA", ft_strlen(ptr[0])) && ft_strlen2(ptr) == 2)
-			fill_textures(ptr[1], &textures->east, count);
+			fill_textures(ptr[1], &game->east, count);
 		else if (!ft_strncmp(ptr[0], "WE", ft_strlen(ptr[0])) && ft_strlen2(ptr) == 2)
-			fill_textures(ptr[1], &textures->west, count);
+			fill_textures(ptr[1], &game->west, count);
 		else if (!ft_strncmp(ptr[0], "SO", ft_strlen(ptr[0])) && ft_strlen2(ptr) == 2)
-			fill_textures(ptr[1], &textures->south, count);
+			fill_textures(ptr[1], &game->south, count);
 		else if (!ft_strncmp(ptr[0], "F", ft_strlen(ptr[0])))
-			fill_color(ptr, &textures->floor, count);
+			fill_color(ptr, &game->floor, count);
 		else if (!ft_strncmp(ptr[0], "C", ft_strlen(ptr[0])))
-			fill_color(ptr, &textures->ceiling, count);
+			fill_color(ptr, &game->ceiling, count);
 		else
 			check_rest(ptr);
 	}
+}
+
+
+void print_texture_info(t_textures *texture, const char *name)
+{
+    if (!texture)
+    {
+        printf("Texture %s is NULL\n", name);
+        return;
+    }
+    printf("🔹 Texture: %s\n", name);
+    printf("  📌 Image Ptr       : %p\n", texture->image);
+    printf("  📌 Address Ptr     : %p\n", texture->add);
+	printf("  📌 width     : %d\n", texture->width);
+	printf("  📌 height     : %d\n", texture->height);
+    printf("  🎨 Bits per Pixel  : %d\n", texture->bits_per_pixel);
+    printf("  📏 Line Length     : %d bytes\n", texture->line_length);
+    printf("  🔄 Endian          : %d\n", texture->endian);
+    printf("-----------------------------------\n");
+}
+
+// This function prints all the textures in the `image` array of `t_game`.
+void print_game_textures(t_game *game)
+{
+    if (!game)
+    {
+        printf("Game is NULL\n");
+        return;
+    }
+
+    // Loop through the `image` array (4 textures in total)
+    for (int i = 0; i < 4; ++i)
+    {
+        char name[16];
+        snprintf(name, sizeof(name), "Texture %d", i);  // Naming each texture: Texture 0, Texture 1, etc.
+        
+        // Print the texture info
+        print_texture_info(game->image[i], name);
+    }
+}
+
+
+void	texture_allocation(t_data *data)
+{
+	int		i;
+
+	i = 0;
+	while (i < 4)
+	{
+		data->game.image[i] = ft_malloc(sizeof(t_textures), ALLOC);
+		if (!data->game.image[i])
+			my_perror(1, "malloc::allocation_failed\n");
+		i++;
+	}
+}
+
+
+void	images_init(t_data *data)
+{
+	texture_allocation(data);
+	data->game.image[0]->image = mlx_xpm_file_to_image(data->mlx, data->game.norh, &data->game.image[0]->width, &data->game.image[0]->height);
+	data->game.image[1]->image = mlx_xpm_file_to_image(data->mlx, data->game.west, &data->game.image[1]->width, &data->game.image[1]->height);
+	data->game.image[2]->image = mlx_xpm_file_to_image(data->mlx, data->game.east, &data->game.image[2]->width, &data->game.image[2]->height);
+	data->game.image[3]->image = mlx_xpm_file_to_image(data->mlx, data->game.south, &data->game.image[3]->width, &data->game.image[3]->height);
+	if (!data->game.image[0]->image || !data->game.image[1]->image || !data->game.image[2]->image || !data->game.image[3]->image)
+	{
+		free_textures(data);
+		my_perror(1, "load textures::failed\n");
+	}
+	data->game.image[0]->add = mlx_get_data_addr(data->game.image[0]->image, &data->game.image[0]->bits_per_pixel, &data->game.image[0]->line_length, &data->game.image[0]->endian);
+	data->game.image[1]->add = mlx_get_data_addr(data->game.image[1]->image, &data->game.image[1]->bits_per_pixel, &data->game.image[1]->line_length, &data->game.image[1]->endian);
+	data->game.image[2]->add = mlx_get_data_addr(data->game.image[2]->image, &data->game.image[2]->bits_per_pixel, &data->game.image[2]->line_length, &data->game.image[2]->endian);
+	data->game.image[3]->add = mlx_get_data_addr(data->game.image[3]->image, &data->game.image[3]->bits_per_pixel, &data->game.image[3]->line_length, &data->game.image[3]->endian);
+}
+
+
+unsigned int rgb_to_int(int red, int green, int blue) 
+{
+    return (red << 16) | (green << 8) | blue;
+}
+
+void	colors_init(t_data *data)
+{
+	char	**color;
+
+	color = ft_split(data->game.floor, ',');
+	data->game.c_floor = rgb_to_int(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
+	color = ft_split(data->game.ceiling, ',');
+	data->game.c_ceiling = rgb_to_int(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
+}
+
+void	free_textures(t_data *data)
+{
+	int	i;
+	t_game	game;
+
+	game = data->game;
+	i = 0;
+	while (i < 4)
+	{
+		if (game.image[i]->image)
+		{
+			mlx_destroy_image(data->mlx, game.image[i]->image);
+			game.image[i]->image = NULL;
+		}
+		i++;
+	}
+	if (data->mlx)
+	{
+		mlx_destroy_window(data->mlx, data->win);
+		data->win = NULL;
+	}
+	return ;
 }
 
 int		check_colors(char **str)

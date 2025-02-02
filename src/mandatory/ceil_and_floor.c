@@ -20,9 +20,9 @@ void ceil_and_floor_filling(t_data *data, int x, int y, double floor_x, double f
         floor_x += floor_step_x;
         floor_y += floor_step_y;
         if (y < data->img.height / 2)
-            draw_pixel(&data->img, x, y, CEILING_COLOR);
+            draw_pixel(&data->img, x, y, data->game.c_ceiling);
         else
-            draw_pixel(&data->img, x, y, FLOOR_COLOR);
+            draw_pixel(&data->img, x, y, data->game.c_floor);
         x++;
     }
 }

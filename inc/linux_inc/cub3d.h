@@ -1,7 +1,7 @@
 #ifndef CUB3D_H
 #define CUB3D_H
 
-#include <mlx.h>
+#include <../../mlx_linux/mlx.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -32,7 +32,7 @@ enum
 // --------------------
 // Constants
 // --------------------       
-#define CELL_SIZE 32           // Map tile size
+#define CELL_SIZE 32          // Map tile size
 #define FOV 0.66               // Field of view
 
 #define W_KEY 119          // W key for forward
@@ -44,8 +44,8 @@ enum
 #define ESCAPE_KEY 65307   // Escape key
 
 #define MOVE_SPEED 4
-#define ROT_SPEED 2
-#define HITBOX_MARG 0.2
+#define ROT_SPEED 0.05
+#define HITBOX_MARG 0
 // #define HITBOX_MARG 0.15 // more edge close
 
 #define PI 3.141592653589793
@@ -136,7 +136,7 @@ typedef struct s_ray
     double delta_dist_y;
     double side_dist_x;
     double side_dist_y;
-    double perp_wall_dist;
+    double perp_wall_dist;   ///distination from the player to the wall
     int step_x;
     int step_y;
     int hit;
@@ -148,13 +148,29 @@ typedef struct s_ray
 
 typedef struct s_textures
 {
+    void    *image;
+    void    *add;
+    int     width;      // Texture width
+    int     height;     // Texture height
+    int     bits_per_pixel; // Bits per pixel (MLX fills this)
+    int     line_length;    // Bytes per row (MLX fills this)
+    int     endian; 
+} t_textures;
+
+typedef struct s_game
+{
 	char	*norh;
 	char	*west;
 	char	*east;
 	char	*south;
 	char	*floor;
 	char	*ceiling;
-} t_textures;
+    unsigned int    c_floor;
+    unsigned int    c_ceiling;
+    t_textures *image[4];
+
+} t_game;
+
 
 typedef struct s_parsing
 {
@@ -172,7 +188,7 @@ typedef struct s_data
     t_player player;            // Player data
     t_player_trail player_trail;
     t_img img;
-    t_textures  textures;
+    t_game  game;
     t_parsing *info;
     // int key_state[256];
 } t_data;
@@ -292,7 +308,7 @@ int        is_num(char *str);
 int        ft_atoi(const char *str);
 void     print_data(t_data *data);
 void    check_inside_map(char **map);
-void    check_texture(char *str, t_textures *textures, int *count);
+void    check_texture(char *str, t_game *game, int *count);
 void     print_2d_array(char **array);
 char    *ft_strtrim(char const *s1, char const *set);
 void    fill_color(char **str, char **texture, int *count);
@@ -330,5 +346,13 @@ char	*ft_strdup2(char *s1);
 // void 	print_data(t_data *data);
 // void    check_inside_map(char **map);
 
+
+///////////////////////////////////////////////////////////////////////////////////
+//textures  and colors //
+///////////////////////////////////////////////////////////////////////////////////
+
+void	images_init(t_data *data);
+void	free_textures(t_data *data);
+void	colors_init(t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 13:58:49 by aragragu          #+#    #+#             */
-/*   Updated: 2025/01/24 16:20:22 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/02/02 18:09:11 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	my_perror(int status, char *str)
 	i = write(2, str, ft_strlen(str));
 	if (i == -1)
 		perror("write failed");
+	ft_malloc(0, FREE);
 	exit(status);
 }
 
@@ -95,36 +96,8 @@ void print_2d_array(char **array) {
     }
 }
 
-// void	parse_data(t_textures *textures, t_parsing *info)
-// {
-// 	int		i;
-// 	int		count;
 
-// 	i = 0;
-// 	count = 0;
-// 	while (info->file_lines[i] && i < info->map_start_index)
-// 	{
-// 		if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "NO", 2))
-// 			fill_texture(info->file_lines[i], &textures->norh, &count);
-// 		else if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "EA", 2))
-// 			fill_texture(info->file_lines[i], &textures->east, &count);
-// 		else if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "WE", 2))
-// 			fill_texture(info->file_lines[i], &textures->west, &count);
-// 		else if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "SO", 2))
-// 			fill_texture(info->file_lines[i], &textures->south, &count);
-// 		else if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "F", 1))
-// 			fill_floor(info->file_lines[i], &textures->floor, &count);
-// 		else if (info->file_lines[i] && !ft_strncmp(info->file_lines[i], "C", 1))
-// 			fill_ceiling(info->file_lines[i], &textures->ceiling, &count);
-// 		else
-// 			check_rest(info->file_lines[i]);
-// 		i++;
-// 	}
-// 	if (count > 6 || count != 6)
-// 		my_perror(1, "error: to much element\n");
-// }
-
-void	parse_data(t_textures *textures, t_parsing *info)
+void	parse_data(t_game *game, t_parsing *info)
 {
 	int		i;
 	int		count;
@@ -133,7 +106,7 @@ void	parse_data(t_textures *textures, t_parsing *info)
 	count = 0;
 	while (info->file_lines[i])
 	{
-		check_texture(info->file_lines[i], textures, &count);
+		check_texture(info->file_lines[i], game, &count);
 		i++;
 	}
 	if (count != 6)
@@ -141,15 +114,15 @@ void	parse_data(t_textures *textures, t_parsing *info)
 }
 
 
-void print_textures(t_textures textures)
+void print_textures(t_game game)
 {
     printf("Textures:\n");
-    printf("  North: %s\n", textures.norh ? textures.norh : "NULL");
-    printf("  West: %s\n", textures.west ? textures.west : "NULL");
-    printf("  East: %s\n", textures.east ? textures.east : "NULL");
-    printf("  South: %s\n", textures.south ? textures.south : "NULL");
-    printf("  Floor: %s\n", textures.floor ? textures.floor : "NULL");
-    printf("  Ceiling: %s\n", textures.ceiling ? textures.ceiling : "NULL");
+    printf("  North: %s\n", game.norh ? game.norh : "NULL");
+    printf("  West: %s\n", game.west ? game.west : "NULL");
+    printf("  East: %s\n", game.east ? game.east : "NULL");
+    printf("  South: %s\n", game.south ? game.south : "NULL");
+    printf("  Floor: %s\n", game.floor ? game.floor : "NULL");
+    printf("  Ceiling: %s\n", game.ceiling ? game.ceiling : "NULL");
 }
 
 void print_map(char **map)
@@ -176,7 +149,7 @@ void print_data(t_data *data)
         printf("Data is NULL!\n");
         return;
     }
-    print_textures(data->textures);
+    print_textures(data->game);
     print_map(data->map.grid);
 }
 
@@ -218,7 +191,7 @@ void	store_data(t_data *data, int fd)
 	data->info->map_start_index = map_first_line_index(data->info->file_lines);
 	if (data->info->map_start_index < 6)
 		my_perror(1, "error: incorrect map config\n");
-	parse_data(&data->textures, data->info);
+	parse_data(&data->game, data->info);
 	parse_map(data);
 	// print_data(data);
 }
