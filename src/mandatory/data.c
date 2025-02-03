@@ -10,6 +10,8 @@ void init_player_defaults(t_player *player)
     player->rotate_right = 0;
     player->move_speed = MOVE_SPEED;  //4
     player->rot_speed = ROT_SPEED;
+    player->prev_x = MAP_WIDTH / 2;
+    player->first_time = 1;
 }
 
 void player_init(t_map *map, t_player *player)

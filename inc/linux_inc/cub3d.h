@@ -45,7 +45,7 @@ enum
 
 #define MOVE_SPEED 4
 #define ROT_SPEED 0.05
-#define HITBOX_MARG 0
+#define HITBOX_MARG 0.2
 // #define HITBOX_MARG 0.15 // more edge close
 
 #define PI 3.141592653589793
@@ -95,6 +95,8 @@ typedef struct s_player
     int rotate_right;
     double move_speed;
     double rot_speed;
+    int first_time;
+    int prev_x;
 } t_player;
 
 // Map structure
@@ -264,6 +266,12 @@ int key_press(int key, t_data *data);
 int key_release(int key, t_data *data);
 // void ppos(t_player *player);
 // void draw_rectangle(t_img *img, int x, int y, int width, int height, int color);
+
+
+                                /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
+
+// Mouse
+void setup_mouse_rotation(t_data *data);
 
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
 

@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
 		file_parsing(&data, argv[1]);
         
         data_init(&data);
+        setup_mouse_rotation(&data);
 
         mlx_hook(data.win, 2, 1L << 0, key_press, &data);
         mlx_hook(data.win, 3, 1L << 1, key_release, &data);
