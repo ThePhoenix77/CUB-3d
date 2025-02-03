@@ -63,7 +63,7 @@ void draw_wall(t_ray *ray, t_data *data, int x)
     float tex_step, tex_pos;
 
     tex_num = get_texture_number(ray);
-    printf("texture number is [%d]\n", tex_num);
+    // printf("texture number is [%d]\n", tex_num);
     if (ray->side == 0) // Horizontal wall (east or west)
         wall_x = data->player.y + ray->perp_wall_dist * ray->ray_dir_y;
     else // Vertical wall (north or south)
