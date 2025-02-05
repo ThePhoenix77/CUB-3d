@@ -248,7 +248,7 @@ void calculate_step_and_side_dist(t_ray *ray, t_data *data);
 void perform_dda(t_ray *ray, t_map *map);
 void calculate_wall_distance(t_ray *ray, t_player *player);
 void calculate_line_dimensions(t_ray *ray, int screen_height);
-void draw_wall(t_ray *ray, t_data *data, int x);
+void draw_wall(t_ray *ray, t_data *data, int x, int screen_height);
 void raycast(t_data *data);
 
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/

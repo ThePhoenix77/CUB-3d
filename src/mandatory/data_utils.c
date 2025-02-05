@@ -66,35 +66,6 @@ void init_player_direction(t_player *player, char orientation)
         set_direction(player, -1, 0);
 }
 
-// int find_player_position(t_map *map, t_player *player)
-// {
-//     int x;
-//     int y;
-
-//     y = 0;
-//     print_map(map->grid);
-//     while (y <  map->height)
-//     {
-//         x = 0;
-//         while (x < map->width)
-//         {
-//             if (is_player_cell(map->grid[y][x]))
-//             {
-//                 player->x = x;
-//                 player->y = y;
-//                 set_player_direction(map->grid[y][x], player);
-//                 set_player_plane(player);
-//                 map->grid[y][x] = '0';
-//                 player->x = (player->x * CELL_SIZE) + (CELL_SIZE / 2);
-//                 player->y = (player->y * CELL_SIZE) + (CELL_SIZE / 2);
-//                 return (1);
-//             }
-//             x++;
-//         }
-//         y++;
-//     }
-//     return (0);
-// }
 
 int find_player_position(t_map *map, t_player *player)
 {

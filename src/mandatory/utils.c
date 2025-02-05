@@ -1,4 +1,4 @@
-# include "cub3d.h"
+# include "../../inc/linux_inc/cub3d.h"
 
 int game_loop(t_data *data)
 {

@@ -1,4 +1,4 @@
-# include "cub3d.h"
+# include "../../inc/linux_inc/cub3d.h"
 
 int get_pixel_index(int x, int y, t_img *img)
 {
@@ -28,16 +28,14 @@ void clear_img(t_data *data)
 {
     int i;
     int j;
-    int color;
 
     i = 0;
-    color = 0x000000;
     while (i < MAP_WIDTH)
     {
         j = 0;
         while (j < MAP_HEIGHT)
         {
-            put_pixel_to_image(&data->img, i, j, color, MAP_WIDTH, MAP_HEIGHT);
+            put_pixel_to_image(&data->img, i, j, 0, MAP_WIDTH, MAP_HEIGHT);
             j++;
         }
         i++;
