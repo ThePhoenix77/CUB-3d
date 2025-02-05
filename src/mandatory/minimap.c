@@ -111,15 +111,13 @@ void draw_minimap_frame(t_data *data)
 
 void render_minimap(t_data *data)
 {
-    int viewport_start_x, viewport_start_y, viewport_end_x, viewport_end_y;
+    int viewport_start_x;
+    int viewport_start_y;
+    int viewport_end_x;
+    int viewport_end_y;
 
-    printf("1\n");
     calculate_viewport(data, &viewport_start_x, &viewport_start_y, &viewport_end_x, &viewport_end_y);
-    printf("2\n");
     draw_minimap_frame(data);
-    printf("3\n");
     draw_minimap_tiles(data, viewport_start_x, viewport_start_y, viewport_end_x, viewport_end_y);
-    printf("4\n");
     draw_player_on_minimap(data);
-    printf("5\n");
 }

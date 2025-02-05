@@ -41,6 +41,7 @@ void init_player_trail(t_player_trail *trail)
 
 void data_init(t_data *data)
 {
+    // data->count=0;
     // Initialize MiniLibX
     data->mlx = mlx_init();
     if (!data->mlx)

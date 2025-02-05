@@ -66,5 +66,10 @@ void perform_dda(t_ray *ray, t_map *map)
         }
         if (map->grid[ray->map_y / CELL_SIZE][ray->map_x / CELL_SIZE] == '1')
             ray->hit = 1;
+        if (map->grid[ray->map_y / CELL_SIZE][ray->map_x / CELL_SIZE] == 'D')
+        {
+            ray->hit = 1;
+            ray->is_door = 1;
+        }
     }
 }

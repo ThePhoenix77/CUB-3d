@@ -97,6 +97,7 @@ typedef struct s_player
     double rot_speed;
     int first_time;
     int prev_x;
+    int door_open;
 } t_player;
 
 // Map structure
@@ -146,6 +147,7 @@ typedef struct s_ray
     int line_height;
     int draw_start;
     int draw_end;
+    int is_door;
 } t_ray;
 
 typedef struct s_textures
@@ -169,7 +171,7 @@ typedef struct s_game
 	char	*ceiling;
     unsigned int    c_floor;
     unsigned int    c_ceiling;
-    t_textures *image[4];
+    t_textures *image[5];
 
 } t_game;
 
@@ -272,6 +274,11 @@ int key_release(int key, t_data *data);
 
 // Mouse
 void setup_mouse_rotation(t_data *data);
+
+                                /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
+
+//Doors
+void handle_door(t_ray *ray, t_data *data);
 
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
 

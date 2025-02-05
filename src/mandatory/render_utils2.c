@@ -6,8 +6,10 @@ int color_cell_matching(char cell)
         return (0xFFFFFF); // White (wall)
     if (cell == '0')
         return (0x000000); // Black (empty space)
-    if (cell == 'N')
+    if (cell == 'N' || cell == 'S'|| cell == 'E'|| cell == 'W')
         return (0xFF0000); // Red (player position)
+    if (cell == 'D')
+        return (0x8B4513); // Brown (Door position)
     return (0x0000FF); // Blue (unknown)
 }
 
