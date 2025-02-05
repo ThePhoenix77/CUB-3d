@@ -5,10 +5,16 @@ void initialize_ray(t_ray *ray, t_data *data, int x)
     ray->camera_x = 2.0 * x / (double)data->img.width - 1.0;
     ray->ray_dir_x = data->player.dir_x + data->player.plane_x * ray->camera_x;
     ray->ray_dir_y = data->player.dir_y + data->player.plane_y * ray->camera_x;
-    ray->map_x = (int)(data->player.x);
-    ray->map_y = (int)(data->player.y);
-    ray->delta_dist_x = (ray->ray_dir_x == 0) ? 1e30 : fabs(1.0 / ray->ray_dir_x);
-    ray->delta_dist_y = (ray->ray_dir_y == 0) ? 1e30 : fabs(1.0 / ray->ray_dir_y);
+    ray->map_x = (int)data->player.x;
+    ray->map_y = (int)data->player.y;
+    if (ray->ray_dir_x == 0)
+        ray->delta_dist_x = INFINITY;
+    else
+        ray->delta_dist_x = fabs(1.0 / ray->ray_dir_x);
+    if (ray->ray_dir_y == 0)
+        ray->delta_dist_y = INFINITY;
+    else
+        ray->delta_dist_y = fabs(1.0 / ray->ray_dir_y);
 }
 
 void calculate_wall_distance(t_ray *ray, t_player *player)
@@ -33,26 +39,23 @@ void calculate_line_dimensions(t_ray *ray, int screen_height)
         ray->draw_end = screen_height - 1;
 }
 
-void my_mlx_pixel_put(t_img *img, int x, int y, int color)
+int get_texture_number(t_ray *ray)
 {
-    unsigned char *dst = img->data + (y * img->size_line + x * (img->bpp / 8));
-    *(unsigned int *)dst = color;
-}
-
-int     get_texture_number(t_ray *ray)
-{
+    if (ray->is_door == 1 && ray->hit == 2)
+        return (4);
     if (ray->side == 0 && ray->ray_dir_x > 0)
         return (0);
     else if (ray->side == 0 && ray->ray_dir_x < 0)
         return (1);
     else if (ray->side == 1 && ray->ray_dir_y > 0)
         return (2);
-    else
+    else if (ray->side == 1 && ray->ray_dir_y < 0)
         return (3);
+    return (0);
 }
 
 
-void draw_wall(t_ray *ray, t_data *data, int x, int screen_height)
+void draw_wall(t_ray *ray, t_data *data, int x)
 {
     int y;
     int color;
@@ -72,7 +75,7 @@ void draw_wall(t_ray *ray, t_data *data, int x, int screen_height)
     if ((ray->side == 0 && ray->ray_dir_x > 0) || (ray->side == 1 && ray->ray_dir_y < 0))
         tex_x = data->game.image[tex_num]->width - tex_x - 1;
     tex_step = 1.0 * (double)data->game.image[tex_num]->height / ray->line_height;
-    tex_pos = (ray->draw_start - screen_height / 2 + ray->line_height / 2) * tex_step;
+    tex_pos = (ray->draw_start - MAP_HEIGHT / 2 + ray->line_height / 2) * tex_step;
     y = ray->draw_start;
     while (y <= ray->draw_end)
     {
@@ -81,7 +84,7 @@ void draw_wall(t_ray *ray, t_data *data, int x, int screen_height)
             tex_y = data->game.image[tex_num]->height - 1;
         tex_pos += tex_step;
         color = *(int *)(data->game.image[tex_num]->add + tex_y * data->game.image[tex_num]->line_length + tex_x * (data->game.image[tex_num]->bits_per_pixel / 8));
-        my_mlx_pixel_put(&data->img, x, y, color);
+        draw_pixel(&data->img, x, y, color);
         y++;
     }
 }
@@ -98,9 +101,11 @@ void raycast(t_data *data)
         initialize_ray(&ray, data, x);
         calculate_step_and_side_dist(&ray, data);
         perform_dda(&ray, &data->map);
+        // if (data->map.grid[ray.map_x][ray.map_y] == 'D')
+        //     handle_door(&ray, data);
         calculate_wall_distance(&ray, &data->player);
         calculate_line_dimensions(&ray, data->img.height);
-        draw_wall(&ray, data, x, data->img.height);
+        draw_wall(&ray, data, x);
         x++;
     }
     mlx_put_image_to_window(data->mlx, data->win, data->img.img_ptr, 0, 0);

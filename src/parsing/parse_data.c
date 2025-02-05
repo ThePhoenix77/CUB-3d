@@ -21,7 +21,7 @@ int	is_map_line(char *str)
 		return (0);
 	while (str[i])
 	{
-		if (!(str[i] == '1' || str[i] == '0' || str[i] == ' ' || str[i] == 'E' || str[i] == 'W' || str[i] == 'S' || str[i] == 'N'))
+		if (!(str[i] == '1' || str[i] == '0' || str[i] == ' ' || str[i] == 'E' || str[i] == 'W' || str[i] == 'S' || str[i] == 'N' || str[i] == 'D'))
 			return (0);
 		i++;
 	}
@@ -221,7 +221,7 @@ void	texture_allocation(t_data *data)
 	int		i;
 
 	i = 0;
-	while (i < 4)
+	while (i < 5)
 	{
 		data->game.image[i] = ft_malloc(sizeof(t_textures), ALLOC);
 		if (!data->game.image[i])
@@ -238,7 +238,8 @@ void	images_init(t_data *data)
 	data->game.image[1]->image = mlx_xpm_file_to_image(data->mlx, data->game.west, &data->game.image[1]->width, &data->game.image[1]->height);
 	data->game.image[2]->image = mlx_xpm_file_to_image(data->mlx, data->game.east, &data->game.image[2]->width, &data->game.image[2]->height);
 	data->game.image[3]->image = mlx_xpm_file_to_image(data->mlx, data->game.south, &data->game.image[3]->width, &data->game.image[3]->height);
-	if (!data->game.image[0]->image || !data->game.image[1]->image || !data->game.image[2]->image || !data->game.image[3]->image)
+	data->game.image[4]->image = mlx_xpm_file_to_image(data->mlx, "assets/SO.xpm", &data->game.image[4]->width, &data->game.image[4]->height);
+	if (!data->game.image[0]->image || !data->game.image[1]->image || !data->game.image[2]->image || !data->game.image[3]->image || !data->game.image[4]->image)
 	{
 		free_textures(data);
 		my_perror(1, "load textures::failed\n");
@@ -247,6 +248,7 @@ void	images_init(t_data *data)
 	data->game.image[1]->add = mlx_get_data_addr(data->game.image[1]->image, &data->game.image[1]->bits_per_pixel, &data->game.image[1]->line_length, &data->game.image[1]->endian);
 	data->game.image[2]->add = mlx_get_data_addr(data->game.image[2]->image, &data->game.image[2]->bits_per_pixel, &data->game.image[2]->line_length, &data->game.image[2]->endian);
 	data->game.image[3]->add = mlx_get_data_addr(data->game.image[3]->image, &data->game.image[3]->bits_per_pixel, &data->game.image[3]->line_length, &data->game.image[3]->endian);
+	data->game.image[4]->add = mlx_get_data_addr(data->game.image[4]->image, &data->game.image[4]->bits_per_pixel, &data->game.image[4]->line_length, &data->game.image[4]->endian);
 }
 
 
@@ -367,7 +369,7 @@ void	fill_ceiling(char **str, char **texture, int *count)
 
 int wrong_char(char c)
 {
-	if (c == '1' || c == '0' || c == '\n' || c == 'E' || c == 'W' || c == 'S' || c == 'N')
+	if (c == '1' || c == '0' || c == '\n' || c == 'E' || c == 'W' || c == 'S' || c == 'N' || c == 'D')
 		return (1);
 	else
 		return (0);

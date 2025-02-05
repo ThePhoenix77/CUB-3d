@@ -52,3 +52,51 @@ void rotate_right(t_player *player)
     player->plane_x = player->plane_x * cos_angle - player->plane_y * sin_angle;
     player->plane_y = old_plane_x * sin_angle + player->plane_y * cos_angle;
 }
+
+/*
+
+void normalize_vector(double *x, double *y)
+{
+    double magnitude = sqrt((*x) * (*x) + (*y) * (*y));
+    if (magnitude > 0.0)
+    {
+        *x /= magnitude;
+        *y /= magnitude;
+    }
+}
+
+void rotate_left(t_player *player)
+{
+    double old_dir_x = player->dir_x;
+    double old_plane_x = player->plane_x;
+    double cos_angle = cos(-player->rot_speed);
+    double sin_angle = sin(-player->rot_speed);
+
+    player->dir_x = player->dir_x * cos_angle - player->dir_y * sin_angle;
+    player->dir_y = old_dir_x * sin_angle + player->dir_y * cos_angle;
+    player->plane_x = player->plane_x * cos_angle - player->plane_y * sin_angle;
+    player->plane_y = old_plane_x * sin_angle + player->plane_y * cos_angle;
+
+    // Normalize direction vectors to prevent drift
+    normalize_vector(&player->dir_x, &player->dir_y);
+    normalize_vector(&player->plane_x, &player->plane_y);
+}
+
+void rotate_right(t_player *player)
+{
+    double old_dir_x = player->dir_x;
+    double old_plane_x = player->plane_x;
+    double cos_angle = cos(player->rot_speed);
+    double sin_angle = sin(player->rot_speed);
+
+    player->dir_x = player->dir_x * cos_angle - player->dir_y * sin_angle;
+    player->dir_y = old_dir_x * sin_angle + player->dir_y * cos_angle;
+    player->plane_x = player->plane_x * cos_angle - player->plane_y * sin_angle;
+    player->plane_y = old_plane_x * sin_angle + player->plane_y * cos_angle;
+
+    // Normalize direction vectors to prevent drift
+    normalize_vector(&player->dir_x, &player->dir_y);
+    normalize_vector(&player->plane_x, &player->plane_y);
+}
+
+*/

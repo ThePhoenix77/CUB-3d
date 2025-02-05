@@ -16,6 +16,7 @@ int handle_exit()
 
 int main(int argc, char *argv[])
 {
+    // (void)argv;
     t_data data;
 
 	if (argc == 2)
