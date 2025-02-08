@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <time.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10
@@ -171,6 +172,13 @@ typedef struct s_game
 	char	*ceiling;
     unsigned int    c_floor;
     unsigned int    c_ceiling;
+    int             current_frame;
+    double          last_frame_time;
+    double          frame_delay;
+    int             frame_counter;
+    int             is_shooting;
+    // t_textures *gun[50];
+    t_textures *gun[43];
     t_textures *image[5];
 
 } t_game;
@@ -330,6 +338,7 @@ void    fill_color(char **str, char **texture, int *count);
 int        is_num2(char *str);
 void print_map(char **map);
 char	*ft_strdup2(char *s1);
+char	*ft_itoa(int nb);
 // void	my_perror(int status, char *str);
 // int		ft_strncmp(const char *s1, const char *s2, int n);
 // int	 	ft_strlen(const char *str);
@@ -369,5 +378,9 @@ char	*ft_strdup2(char *s1);
 void	images_init(t_data *data);
 void	free_textures(t_data *data);
 void	colors_init(t_data *data);
+void    load_gun_frames(t_data  *data);
+void print_game_textures(t_game *game);
+// int    render_animation(t_data *data);
+void    render_gun_sprite(t_data *data);
 
 #endif

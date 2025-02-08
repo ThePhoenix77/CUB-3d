@@ -41,27 +41,19 @@ void init_player_trail(t_player_trail *trail)
 
 void data_init(t_data *data)
 {
-    // data->count=0;
-    // Initialize MiniLibX
     data->mlx = mlx_init();
     if (!data->mlx)
         quit("Error: MiniLibX initialization failed!");
-    // Initialize the map
-    /*modification: read & add the map*/
-    // map_init(&data->map, "/home/tboussad/work/CUB-3d/maps/test.map");
-    /*modification: map parsing*/    
     if (data->map.grid == NULL)
         quit("Error: Map initialization failed!");
-    // Create a new window
-    // print_data(data);
     data->win = mlx_new_window(data->mlx, MAP_WIDTH, MAP_HEIGHT, "Cub3D");
     if (!data->win)
         quit("Error: Window creation failed!");
+    mlx_string_put(data->mlx, data->win, 1200, 400, 0xFFFFFF, "Loading textures...");
     images_init(data);
     colors_init(data);
-    // Initialize the player
+    load_gun_frames(data);
     player_init(&data->map, &data->player);
     init_player_trail(&data->player_trail);
-    // Initialize the image
     init_img(data);
 }

@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 17:13:32 by aragragu          #+#    #+#             */
-/*   Updated: 2025/02/02 18:20:16 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/02/06 18:25:37 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,15 +184,15 @@ void print_texture_info(t_textures *texture, const char *name)
         printf("Texture %s is NULL\n", name);
         return;
     }
-    printf("🔹 Texture: %s\n", name);
-    printf("  📌 Image Ptr       : %p\n", texture->image);
-    printf("  📌 Address Ptr     : %p\n", texture->add);
-	printf("  📌 width     : %d\n", texture->width);
-	printf("  📌 height     : %d\n", texture->height);
-    printf("  🎨 Bits per Pixel  : %d\n", texture->bits_per_pixel);
-    printf("  📏 Line Length     : %d bytes\n", texture->line_length);
-    printf("  🔄 Endian          : %d\n", texture->endian);
-    printf("-----------------------------------\n");
+    printf("🔹 Texture: %s <> 📌 Image Ptr: %p <> 📌 Address Ptr: %p <> 📌 width: %d <> 📌 height: %d <> 🎨 Bits per Pixel: %d <> 📏 Line Length: %d bytes <> 🔄 Endian: %d <> -----------------------------------\n",
+           name,
+           texture->image,
+           texture->add,
+           texture->width,
+           texture->height,
+           texture->bits_per_pixel,
+           texture->line_length,
+           texture->endian);
 }
 
 // This function prints all the textures in the `image` array of `t_game`.
@@ -205,7 +205,7 @@ void print_game_textures(t_game *game)
     }
 
     // Loop through the `image` array (4 textures in total)
-    for (int i = 0; i < 4; ++i)
+    for (int i = 0; i < 5; ++i)
     {
         char name[16];
         snprintf(name, sizeof(name), "Texture %d", i);  // Naming each texture: Texture 0, Texture 1, etc.
@@ -249,6 +249,7 @@ void	images_init(t_data *data)
 	data->game.image[2]->add = mlx_get_data_addr(data->game.image[2]->image, &data->game.image[2]->bits_per_pixel, &data->game.image[2]->line_length, &data->game.image[2]->endian);
 	data->game.image[3]->add = mlx_get_data_addr(data->game.image[3]->image, &data->game.image[3]->bits_per_pixel, &data->game.image[3]->line_length, &data->game.image[3]->endian);
 	data->game.image[4]->add = mlx_get_data_addr(data->game.image[4]->image, &data->game.image[4]->bits_per_pixel, &data->game.image[4]->line_length, &data->game.image[4]->endian);
+	// print_game_textures(&data->game);
 }
 
 
