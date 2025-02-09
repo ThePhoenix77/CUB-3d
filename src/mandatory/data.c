@@ -39,6 +39,11 @@ void init_player_trail(t_player_trail *trail)
     trail->size = 0;
 }
 
+// void init_map_timer(t_data *data)
+// {
+//     data->map.timer = 0;
+// }
+
 void data_init(t_data *data)
 {
     // data->count=0;
@@ -62,6 +67,7 @@ void data_init(t_data *data)
     // Initialize the player
     player_init(&data->map, &data->player);
     init_player_trail(&data->player_trail);
+    // init_map_timer(data);
     // Initialize the image
     init_img(data);
 }

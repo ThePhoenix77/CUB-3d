@@ -2,6 +2,7 @@
 
 int game_loop(t_data *data)
 {
+    // auto_close_doors(&data->map);
     render(data);
     move_player(data);
     // usleep(16667); // 60fps

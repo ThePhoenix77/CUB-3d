@@ -238,7 +238,7 @@ void	images_init(t_data *data)
 	data->game.image[1]->image = mlx_xpm_file_to_image(data->mlx, data->game.west, &data->game.image[1]->width, &data->game.image[1]->height);
 	data->game.image[2]->image = mlx_xpm_file_to_image(data->mlx, data->game.east, &data->game.image[2]->width, &data->game.image[2]->height);
 	data->game.image[3]->image = mlx_xpm_file_to_image(data->mlx, data->game.south, &data->game.image[3]->width, &data->game.image[3]->height);
-	data->game.image[4]->image = mlx_xpm_file_to_image(data->mlx, "assets/SO.xpm", &data->game.image[4]->width, &data->game.image[4]->height);
+	data->game.image[4]->image = mlx_xpm_file_to_image(data->mlx, "assets/DOOR.xpm", &data->game.image[4]->width, &data->game.image[4]->height);
 	if (!data->game.image[0]->image || !data->game.image[1]->image || !data->game.image[2]->image || !data->game.image[3]->image || !data->game.image[4]->image)
 	{
 		free_textures(data);

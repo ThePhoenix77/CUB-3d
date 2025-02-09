@@ -115,7 +115,7 @@ void render_minimap(t_data *data)
     int viewport_start_y;
     int viewport_end_x;
     int viewport_end_y;
-
+    
     calculate_viewport(data, &viewport_start_x, &viewport_start_y, &viewport_end_x, &viewport_end_y);
     draw_minimap_frame(data);
     draw_minimap_tiles(data, viewport_start_x, viewport_start_y, viewport_end_x, viewport_end_y);

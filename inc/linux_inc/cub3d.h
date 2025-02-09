@@ -39,19 +39,20 @@ enum
 #define A_KEY 97           // A key for strafe left
 #define S_KEY 115          // S key for backward
 #define D_KEY 100          // D key for strafe right
+#define O_KEY 111          // O key for door opening
 #define LEFT_KEY 65361     // Left arrow key for rotating left
 #define RIGHT_KEY 65363    // Right arrow key for rotating right
 #define ESCAPE_KEY 65307   // Escape key
 
-#define MOVE_SPEED 4
-#define ROT_SPEED 0.05
+#define MOVE_SPEED 8
+#define ROT_SPEED 0.08
 #define HITBOX_MARG 0.2
 // #define HITBOX_MARG 0.15 // more edge close
 
 #define PI 3.141592653589793
 
-#define MAP_WIDTH 2400
-#define MAP_HEIGHT 800
+#define MAP_WIDTH 2048
+#define MAP_HEIGHT 960
 
 #define MINIMAP_CENTER_X 100 // Adjust as needed for your window dimensions
 #define MINIMAP_CENTER_Y 100
@@ -106,8 +107,8 @@ typedef struct s_map
     char **grid;                // 2D grid representing the map
     int width;
 	int height;          // Map dimensions
+    int doors[MAP_HEIGHT][MAP_WIDTH];
 } t_map;
-
 
 typedef struct s_free
 {
@@ -247,7 +248,7 @@ void render_ceiling_and_floor(t_data *data);
 // void raycast(t_data *data);
 void initialize_ray(t_ray *ray, t_data *data, int x);
 void calculate_step_and_side_dist(t_ray *ray, t_data *data);
-void perform_dda(t_ray *ray, t_map *map);
+void perform_dda(t_ray *ray, t_map *map, t_player *player);
 void calculate_wall_distance(t_ray *ray, t_player *player);
 void calculate_line_dimensions(t_ray *ray, int screen_height);
 void draw_wall(t_ray *ray, t_data *data, int x);
@@ -278,7 +279,10 @@ void setup_mouse_rotation(t_data *data);
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
 
 //Doors
-void handle_door(t_ray *ray, t_data *data);
+void open_door(t_data *data);
+// void try_open_door(t_data *data, int x, int y);
+// void auto_close_doors(t_map *map);
+// void handle_door(t_ray *ray, t_data *data);
 
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
 
