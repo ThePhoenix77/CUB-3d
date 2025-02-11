@@ -157,8 +157,8 @@ typedef struct s_textures
     void    *add;
     int     width;      // Texture width
     int     height;     // Texture height
-    int     bits_per_pixel; // Bits per pixel (MLX fills this)
-    int     line_length;    // Bytes per row (MLX fills this)
+    int     bp_pixels; // Bits per pixel (MLX fills this)
+    int     l_length;    // Bytes per row (MLX fills this)
     int     endian; 
 } t_textures;
 
@@ -204,6 +204,19 @@ typedef struct s_data
     t_parsing *info;
     // int key_state[256];
 } t_data;
+
+typedef struct s_cordinate
+{
+    int     y;
+    int     color;
+    int     tex_num;
+    double  wall_x;
+    int     tex_x;
+    int     tex_y;
+    double  tex_step;
+    double  tex_pos;
+}               t_cordinate;
+
 
 // --------------------
 // Prototypes

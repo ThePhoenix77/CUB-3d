@@ -6,35 +6,12 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 12:46:09 by aragragu          #+#    #+#             */
-/*   Updated: 2025/02/11 12:08:42 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/02/11 21:38:45 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/linux_inc/cub3d.h"
 
-
-void print_gun_textures(t_textures *gun[], int count)
-{
-    for (int i = 0; i < count; i++)
-    {
-        if (gun[i] != NULL)
-        {
-            printf("[%d] image: %p, add: %p, width: %d, height: %d, bpp: %d, line_length: %d, endian: %d\n",
-                i,
-                gun[i]->image,
-                gun[i]->add,
-                gun[i]->width,
-                gun[i]->height,
-                gun[i]->bits_per_pixel,
-                gun[i]->line_length,
-                gun[i]->endian);
-        }
-        else
-        {
-            printf("[%d] NULL\n", i);
-        }
-    }
-}
 
 void    load_gun_frames(t_data  *data)
 {
@@ -56,7 +33,7 @@ void    load_gun_frames(t_data  *data)
             // free_textures(data);
             my_perror(1, "load textures::failed\n");
         }
-        data->game.gun[i]->add = mlx_get_data_addr(data->game.gun[i]->image, &data->game.gun[i]->bits_per_pixel, &data->game.gun[i]->line_length, &data->game.gun[i]->endian);
+        data->game.gun[i]->add = mlx_get_data_addr(data->game.gun[i]->image, &data->game.gun[i]->bp_pixels, &data->game.gun[i]->l_length, &data->game.gun[i]->endian);
         i++;
         gun_num++;
     }
@@ -64,8 +41,6 @@ void    load_gun_frames(t_data  *data)
     data->game.frame_delay = 4;
     data->game.frame_counter = 0;
 }
-
-
 
 
 static void update_gun_frame(t_game *game)
@@ -82,10 +57,10 @@ static void update_gun_frame(t_game *game)
 static void draw_gun_pixel_row(t_data *data, t_textures *gun_frame, int j, int dest_y, int x)
 {
     int i;
-    int bpp_src = gun_frame->bits_per_pixel / 8;
+    int bpp_src = gun_frame->bp_pixels / 8;
     int bpp_dst = data->img.bpp / 8;
     
-    char *src_row = gun_frame->add + j * gun_frame->line_length;
+    char *src_row = gun_frame->add + j * gun_frame->l_length;
     unsigned char *dst_row = (unsigned char *)data->img.data + dest_y * data->img.size_line;
 
     i = 0;

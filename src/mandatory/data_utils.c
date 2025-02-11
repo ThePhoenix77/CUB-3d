@@ -73,7 +73,6 @@ int find_player_position(t_map *map, t_player *player)
     int y;
 
     y = 0;
-    print_map(map->grid);
     while (map->grid[y])
     {
         x = 0;

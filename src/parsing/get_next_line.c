@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 16:57:40 by aragragu          #+#    #+#             */
-/*   Updated: 2025/01/20 19:24:35 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:41:01 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ char	*get_next_line(int fd)
 		aftern = NULL;
 		return (NULL);
 	}
-	// buffer = (char *)ft_malloc(BUFFER_SIZE + 1, ALLOC);
 	buffer = (char *)malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (free(aftern), aftern = NULL, NULL);

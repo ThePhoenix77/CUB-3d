@@ -55,38 +55,38 @@ int get_texture_number(t_ray *ray)
 }
 
 
+void    get_texture_cordinates(t_ray *ray, t_data *data, t_cordinate *cordinate)
+{
+    cordinate->tex_num = get_texture_number(ray);
+    if (ray->side == 0)
+        cordinate->wall_x = data->player.y + (ray->perp_wall_dist * CELL_SIZE) * ray->ray_dir_y;
+    else
+        cordinate->wall_x = data->player.x + (ray->perp_wall_dist * CELL_SIZE) * ray->ray_dir_x;
+    cordinate->wall_x = fmod(cordinate->wall_x, CELL_SIZE);
+    cordinate->wall_x /= CELL_SIZE;
+    cordinate->tex_x = (int)(cordinate->wall_x * data->game.image[cordinate->tex_num]->width);
+    if ((ray->side == 0 && ray->ray_dir_x > 0) || (ray->side == 1 && ray->ray_dir_y < 0))
+        cordinate->tex_x = data->game.image[cordinate->tex_num]->width - cordinate->tex_x - 1;
+    cordinate->tex_step = 1.0 * (double)data->game.image[cordinate->tex_num]->height / ray->line_height;
+    cordinate->tex_pos = (ray->draw_start - MAP_HEIGHT / 2 + ray->line_height / 2) * cordinate->tex_step;
+    cordinate->y = ray->draw_start;
+}
+
+
 void draw_wall(t_ray *ray, t_data *data, int x)
 {
-    int y;
-    int color;
-    int tex_num;
-    double wall_x;
-    int tex_x, tex_y;
-    double tex_step, tex_pos;
+    t_cordinate cordinate;
 
-    tex_num = get_texture_number(ray);
-    // printf("tex_num = [%d]\n", tex_num);
-    if (ray->side == 0)
-        wall_x = data->player.y + (ray->perp_wall_dist * CELL_SIZE) * ray->ray_dir_y;
-    else
-        wall_x = data->player.x + (ray->perp_wall_dist * CELL_SIZE) * ray->ray_dir_x;
-    wall_x = fmod(wall_x, CELL_SIZE);
-    wall_x /= CELL_SIZE;
-    tex_x = (int)(wall_x * data->game.image[tex_num]->width);
-    if ((ray->side == 0 && ray->ray_dir_x > 0) || (ray->side == 1 && ray->ray_dir_y < 0))
-        tex_x = data->game.image[tex_num]->width - tex_x - 1;
-    tex_step = 1.0 * (double)data->game.image[tex_num]->height / ray->line_height;
-    tex_pos = (ray->draw_start - MAP_HEIGHT / 2 + ray->line_height / 2) * tex_step;
-    y = ray->draw_start;
-    while (y <= ray->draw_end)
+    get_texture_cordinates(ray, data, &cordinate);
+    while (cordinate.y <= ray->draw_end)
     {
-        tex_y = (int)tex_pos;
-        if (tex_y >= data->game.image[tex_num]->height)
-            tex_y = data->game.image[tex_num]->height - 1;
-        tex_pos += tex_step;
-        color = *(int *)(data->game.image[tex_num]->add + tex_y * data->game.image[tex_num]->line_length + tex_x * (data->game.image[tex_num]->bits_per_pixel / 8));
-        draw_pixel(&data->img, x, y, color);
-        y++;
+        cordinate.tex_y = (int)cordinate.tex_pos;
+        if (cordinate.tex_y >= data->game.image[cordinate.tex_num]->height)
+            cordinate.tex_y = data->game.image[cordinate.tex_num]->height - 1;
+        cordinate.color = *(int *)(data->game.image[cordinate.tex_num]->add + cordinate.tex_y * data->game.image[cordinate.tex_num]->l_length + cordinate.tex_x * (data->game.image[cordinate.tex_num]->bp_pixels / 8));
+        draw_pixel(&data->img, x, cordinate.y, cordinate.color);
+        cordinate.tex_pos += cordinate.tex_step;
+        cordinate.y++;
     }
 }
 

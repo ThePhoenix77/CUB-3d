@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 18:03:34 by aragragu          #+#    #+#             */
-/*   Updated: 2025/02/06 17:59:20 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:52:40 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	if (!s1 || !s2)
 		return (NULL);
-	ptr = (char *)ft_malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1),ALLOC);
+	ptr = (char *)ft_malloc(sizeof(char) * (ft_strlen(s1) + \
+		ft_strlen(s2) + 1), ALLOC);
 	if (!ptr)
 		return (NULL);
 	i = 0;
@@ -65,7 +66,7 @@ void	*ft_calloc(size_t count, size_t size)
 	return (data);
 }
 
-int		ft_strlen2(char **str)
+int	ft_strlen2(char **str)
 {
 	int		i;
 
@@ -119,7 +120,6 @@ int	ft_atoi(const char *str)
 	return ((int)(result * sign));
 }
 
-
 int	is_num(char *str)
 {
 	int		i;
@@ -141,7 +141,8 @@ int	is_num2(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (!((str[i] >= '0' && str[i] <= '9') || str[i] == ',' || str[i] == '-'))
+		if (!((str[i] >= '0' && str[i] <= '9') || \
+			str[i] == ',' || str[i] == '-'))
 			return (0);
 		i++;
 	}
@@ -215,22 +216,20 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	return (ptr);
 }
 
-
-
-int		only_space(char *str)
+int	only_space(char *str)
 {
 	int		i;
 
 	i = 0;
 	while (str[i])
 	{
-		if (!(str[i] == 32 || str[i] == 9 || str[i] == 10 || str[i] == 13 || str[i] == 11 || str[i] == 12))
+		if (!(str[i] == 32 || str[i] == 9 || str[i] == 10 || \
+			str[i] == 13 || str[i] == 11 || str[i] == 12))
 			return (0);
 		i++;
 	}
 	return (1);
 }
-
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
@@ -256,7 +255,6 @@ char	*ft_strtrim(char const *s1, char const *set)
 	ft_strlcpy(ptr, s1 + start, end - start + 1);
 	return (ptr);
 }
-
 
 static	int	len_nem(long nb)
 {

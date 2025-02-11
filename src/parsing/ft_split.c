@@ -6,15 +6,16 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:05:06 by aragragu          #+#    #+#             */
-/*   Updated: 2025/01/02 20:10:21 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:43:19 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/linux_inc/cub3d.h"
 
-static int is_whitespace(char c)
+static	int	is_whitespace(char c)
 {
-    return (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\v' || c == '\f');
+	return (c == ' ' || c == '\t' || c == '\n' || c == '\r' || \
+			c == '\v' || c == '\f');
 }
 
 static	int	count_words(const char *s, char c)
@@ -68,7 +69,6 @@ static	size_t	count_letter(const char *s, int position, char c)
 		i++;
 	return (i);
 }
-
 
 static	size_t	count_letter2(const char *s, int position)
 {
@@ -164,7 +164,6 @@ char	**ft_split(char const *s, char c)
 	result = allocation(result, s, i, c);
 	return (result);
 }
-
 
 char	**ft_split2(char const *s)
 {
