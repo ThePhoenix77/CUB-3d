@@ -1,93 +1,85 @@
 #ifndef CUB3D_H
-#define CUB3D_H
+# define CUB3D_H
 
-#include <../../mlx_linux/mlx.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <stdbool.h>
-#include <fcntl.h>
-#include <unistd.h>
+# include <../../mlx_linux/mlx.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <math.h>
+# include <stdbool.h>
+# include <fcntl.h>
+# include <unistd.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10
 # endif
 
-// Macro for enabling/disabling debug output
-#define DEBUG_MODE 1
-
-#if DEBUG_MODE
-#define DEBUG_PRINTF(...) printf(__VA_ARGS__)
-#else
-#define DEBUG_PRINTF(...)
-#endif
-
+/* -------------------- */
+/*   Garbage Collector  */
+/* -------------------- */
 enum
 {
     FREE,
     ALLOC,
 };
 
-// 💨🥂🍎🍌🥬 ou tiriri m3a 💃
-// --------------------
-// Constants
-// --------------------       
-#define CELL_SIZE 32          // Map tile size
-#define FOV 0.66               // Field of view
+/* -------------------- */
+/* Constants            */
+/* -------------------- */
+# define CELL_SIZE 32      /* Map tile size */
+# define FOV 0.66          /* Field of view */
 
-#define W_KEY 119          // W key for forward
-#define A_KEY 97           // A key for strafe left
-#define S_KEY 115          // S key for backward
-#define D_KEY 100          // D key for strafe right
-#define O_KEY 111          // O key for door opening
-#define LEFT_KEY 65361     // Left arrow key for rotating left
-#define RIGHT_KEY 65363    // Right arrow key for rotating right
-#define ESCAPE_KEY 65307   // Escape key
+/* Keybindings */
+# define W_KEY 119         /* W key for forward */
+# define A_KEY 97          /* A key for strafe left */
+# define S_KEY 115         /* S key for backward */
+# define D_KEY 100         /* D key for strafe right */
+# define O_KEY 111         /* O key for door opening */
+# define LEFT_KEY 65361    /* Left arrow key for rotating left */
+# define RIGHT_KEY 65363   /* Right arrow key for rotating right */
+# define ESCAPE_KEY 65307  /* Escape key */
 
-#define MOVE_SPEED 8
-#define ROT_SPEED 0.08
-#define HITBOX_MARG 0.2
-// #define HITBOX_MARG 0.15 // more edge close
+/* Movement & Rotation */
+# define MOVE_SPEED 8
+# define ROT_SPEED 0.08
+# define HITBOX_MARG 0.2   /* Adjust hitbox margin */
+# define PI 3.141592653589793
 
-#define PI 3.141592653589793
+/* Map & Minimap dimensions */
+# define MAP_WIDTH 2048
+# define MAP_HEIGHT 960
+# define MINIMAP_CENTER_X 100
+# define MINIMAP_CENTER_Y 100
+# define MINIMAP_TILE_SIZE 10
+# define MINIMAP_RADIUS 100
+# define MINIMAP_WIDTH 200
+# define MINIMAP_HEIGHT 200
+# define MINIMAP_SCALE 4
+# define TRAIL_MAX_SIZE 100
 
-#define MAP_WIDTH 2048
-#define MAP_HEIGHT 960
+/* Colors */
+# define CEILING_COLOR 0x87CEEB /* Sky blue */
+# define FLOOR_COLOR 0x8B4513   /* Brown */
+# define MINIMAP_FRAME_COLOR 0xFFD700 /* Gold */
 
-#define MINIMAP_CENTER_X 100 // Adjust as needed for your window dimensions
-#define MINIMAP_CENTER_Y 100
-#define MINIMAP_TILE_SIZE 10
-
-#define MINIMAP_RADIUS 100
-#define MINIMAP_WIDTH 200
-#define MINIMAP_HEIGHT 200
-#define MINIMAP_SCALE 4
-#define TRAIL_MAX_SIZE 100 
-
-#define CEILING_COLOR 0x87CEEB // Sky blue
-#define FLOOR_COLOR 0x8B4513 // rown
-#define MINIMAP_FRAME_COLOR 0xFFD700 // rown
-
-// --------------------
-// Structures
-// --------------------
+/* -------------------- */
+/* Structures           */
+/* -------------------- */
 
 typedef struct s_player_trail
 {
-    int x[TRAIL_MAX_SIZE];   // X coordinates of trail positions
-    int y[TRAIL_MAX_SIZE];   // Y coordinates of trail positions
-    int size;                // Current size of the trail (number of positions stored)
+    int x[TRAIL_MAX_SIZE]; /* X coordinates of trail positions */
+    int y[TRAIL_MAX_SIZE]; /* Y coordinates of trail positions */
+    int size;              /* Current size of the trail */
 } t_player_trail;
 
-// Player structure
 typedef struct s_player
 {
     double x;
-	double y;                // Player's position in the map
+    double y;
     double dir_x;
-	double dir_y;        // Direction vector
+    double dir_y;
     double plane_x;
-	double plane_y;    // Camera plane (used for FOV calculations)
+    double plane_y;
     int forward;
     int backward;
     int left;
@@ -101,32 +93,29 @@ typedef struct s_player
     int door_open;
 } t_player;
 
-// Map structure
 typedef struct s_map
 {
-    char **grid;                // 2D grid representing the map
+    char **grid;           /* 2D grid representing the map */
     int width;
-	int height;          // Map dimensions
-    int doors[MAP_HEIGHT][MAP_WIDTH];
+    int height;
+    int doors[MAP_HEIGHT][MAP_WIDTH]; /* Door locations */
 } t_map;
 
 typedef struct s_free
 {
-    void    *add;
-    struct s_free   *next;
-}               t_free;
+    void *add;
+    struct s_free *next;
+} t_free;
 
-
-// Image structure (for textures or frame buffers)
 typedef struct s_img
 {
-    void *img_ptr;              // Image pointer in MiniLibX
-    unsigned char *data;                 // Pixel data
-    int bpp;                    // Bits per pixel
-    int size_line;              // Size of a line
-    int endian;   
-    int width;                  // Width of the image
-    int height;               // Endianness of pixel data
+    void *img_ptr;         /* Image pointer */
+    unsigned char *data;   /* Pixel data */
+    int bpp;
+    int size_line;
+    int endian;
+    int width;
+    int height;
 } t_img;
 
 typedef struct s_ray
@@ -140,7 +129,7 @@ typedef struct s_ray
     double delta_dist_y;
     double side_dist_x;
     double side_dist_y;
-    double perp_wall_dist;   ///distination from the player to the wall
+    double perp_wall_dist; /* Distance from player to wall */
     int step_x;
     int step_y;
     int hit;
@@ -151,53 +140,71 @@ typedef struct s_ray
     int is_door;
 } t_ray;
 
+typedef struct s_minimap
+{
+    int start_x;
+    int start_y;
+    int end_x;
+    int end_y;
+} t_minimap;
+
+typedef struct s_ceil_floor
+{
+    double ray_dir_x0;
+    double ray_dir_y0;
+    double ray_dir_x1;
+    double ray_dir_y1;
+    double floor_step_x;
+    double floor_step_y;
+    double floor_x;
+    double floor_y;
+} t_ceil_floor;
+
 typedef struct s_textures
 {
-    void    *image;
-    void    *add;
-    int     width;      // Texture width
-    int     height;     // Texture height
-    int     bits_per_pixel; // Bits per pixel (MLX fills this)
-    int     line_length;    // Bytes per row (MLX fills this)
-    int     endian; 
+    void *image;
+    void *add;
+    int width;
+    int height;
+    int bits_per_pixel;
+    int line_length;
+    int endian;
 } t_textures;
 
 typedef struct s_game
 {
-	char	*norh;
-	char	*west;
-	char	*east;
-	char	*south;
-	char	*floor;
-	char	*ceiling;
-    unsigned int    c_floor;
-    unsigned int    c_ceiling;
+    char *norh;
+    char *west;
+    char *east;
+    char *south;
+    char *floor;
+    char *ceiling;
+    unsigned int c_floor;
+    unsigned int c_ceiling;
     t_textures *image[5];
-
 } t_game;
-
 
 typedef struct s_parsing
 {
-	int			fd;
-	int			file_lenght;
-	int			map_start_index;
-	char		**file_lines;
+    int fd;
+    int file_lenght;
+    int map_start_index;
+    char **file_lines;
 } t_parsing;
 
 typedef struct s_data
 {
-    void *mlx;                  // MiniLibX instance
-    void *win;                  // Window pointer
-    t_map map;                  // Map data
-    t_player player;            // Player data
+    void *mlx;
+    void *win;
+    t_map map;
+    t_player player;
     t_player_trail player_trail;
+    t_minimap minimap;
+    t_ceil_floor ceil_floor;
     t_img img;
-    t_game  game;
+    t_game game;
     t_parsing *info;
-    // int key_state[256];
 } t_data;
-
 // --------------------
 // Prototypes
 // --------------------
@@ -231,9 +238,9 @@ void render_ceiling_and_floor(t_data *data);
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
 
 // Minimap
-void draw_minimap_tiles(t_data *data, int start_x, int start_y, int end_x, int end_y);
+void draw_minimap_tiles(t_data *data);
 void draw_player_on_minimap(t_data *data);
-void calculate_viewport(t_data *data, int *start_x, int *start_y, int *end_x, int *end_y);
+void calculate_viewport(t_data *data);
 void render_ceiling_and_floor(t_data *data);
 
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
