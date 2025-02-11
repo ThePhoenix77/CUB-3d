@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 17:13:32 by aragragu          #+#    #+#             */
-/*   Updated: 2025/02/06 18:25:37 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/02/10 20:03:13 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	validat_map(char **map)
 		player_detected(map[i], &count);
 		i++;
 	}
-	if (count > 1)
+	if (count > 1 || count == 0)
 		my_perror(1, "error: to many player start position\n");
 }
 
@@ -264,8 +264,10 @@ void	colors_init(t_data *data)
 
 	color = ft_split(data->game.floor, ',');
 	data->game.c_floor = rgb_to_int(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
+	printf(" FLOOR COLOR: %d\n", data->game.c_floor);
 	color = ft_split(data->game.ceiling, ',');
 	data->game.c_ceiling = rgb_to_int(ft_atoi(color[0]), ft_atoi(color[1]), ft_atoi(color[2]));
+	printf(" CEIL COLOR: %d\n", data->game.c_ceiling);
 }
 
 void	free_textures(t_data *data)

@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 12:46:09 by aragragu          #+#    #+#             */
-/*   Updated: 2025/02/08 21:42:47 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/02/11 12:08:42 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,15 @@ void    load_gun_frames(t_data  *data)
     int     gun_num;
 
     i = 0;
-    gun_num = 0;
-    // ft_strjoin(ft_strjoin(ft_strdup("assets/gun_frames/gun_"), ft_itoa(gun_num)), ".xpm")
+    gun_num = 1;
     // exit(0);
-    while (i < 43)
+    while (i < 8)
     {
         data->game.gun[i] = ft_malloc(sizeof(t_textures), ALLOC);
         if (!data->game.gun[i])
             my_perror(1, "error: malloc failed\n");
-        data->game.gun[i]->image = mlx_xpm_file_to_image(data->mlx, ft_strjoin("assets/cs2/", ft_strjoin(ft_itoa(gun_num), ".xpm")), &data->game.gun[i]->width, &data->game.gun[i]->height);
-    printf("path : [%s]\n", ft_strjoin("assets/cs2/", ft_strjoin(ft_itoa(gun_num), ".xpm")));
+        data->game.gun[i]->image = mlx_xpm_file_to_image(data->mlx, ft_strjoin(ft_strjoin(ft_strdup("assets/gun_frames/gun_"), ft_itoa(gun_num)), ".xpm"), &data->game.gun[i]->width, &data->game.gun[i]->height);
+    // printf("path : [%s]\n", ft_strjoin("assets/cs2/", ft_strjoin(ft_itoa(gun_num), ".xpm")));
         if (!data->game.gun[i]->image)
         {
             // free_textures(data);
@@ -62,78 +61,73 @@ void    load_gun_frames(t_data  *data)
         gun_num++;
     }
     data->game.current_frame = 0;
-    data->game.frame_delay = 2;
+    data->game.frame_delay = 4;
     data->game.frame_counter = 0;
 }
 
 
-// void    render_gun_sprite(t_data *data)
-// {
-//     int x;
-//     int y;
-//     t_game *game;
 
-//     if (data->game.frame_counter >= data->game.frame_delay) 
-//     {
-//         data->game.current_frame = (data->game.current_frame + 1) % 43;
-//         data->game.frame_counter = 0;
-//     }
-//     data->game.frame_counter++;
-//     game = &data->game;
-//     x = (MAP_WIDTH - game->gun[game->current_frame]->width) / 2;
-//     y = MAP_HEIGHT - game->gun[game->current_frame]->height;
-//     mlx_put_image_to_window(data->mlx, data->win, game->gun[game->current_frame]->image, x, y);
-// }
-void render_gun_sprite(t_data *data)
+
+static void update_gun_frame(t_game *game)
 {
-    int         x, y;
-    t_game      *game = &data->game;
-    t_textures  *gun_frame;
-    int         bytes_per_pixel_src, bytes_per_pixel_dst;
-    int         i, j;
-    char        *src_row;
-    unsigned char *dst_row;
-
     if (game->frame_counter >= game->frame_delay)
     {
-        game->current_frame = (game->current_frame + 1) % 43;
+        game->current_frame = (game->current_frame + 1) % 8;
         game->frame_counter = 0;
     }
     game->frame_counter++;
-    gun_frame = game->gun[game->current_frame];
-    if (!gun_frame || !gun_frame->add)
-        return;
+}
 
-    x = (MAP_WIDTH - gun_frame->width) / 2;
-    y = MAP_HEIGHT - gun_frame->height;
-    bytes_per_pixel_src = gun_frame->bits_per_pixel / 8;
-    bytes_per_pixel_dst = data->img.bpp / 8;
+
+static void draw_gun_pixel_row(t_data *data, t_textures *gun_frame, int j, int dest_y, int x)
+{
+    int i;
+    int bpp_src = gun_frame->bits_per_pixel / 8;
+    int bpp_dst = data->img.bpp / 8;
+    
+    char *src_row = gun_frame->add + j * gun_frame->line_length;
+    unsigned char *dst_row = (unsigned char *)data->img.data + dest_y * data->img.size_line;
+
+    i = 0;
+    while (i < gun_frame->width)
+    {
+        int dest_x = x + i;
+        if (dest_x >= 0 && dest_x < MAP_WIDTH)
+        {
+            int color = *(int *)(src_row + i * bpp_src);
+            if (color != 0x000000)
+                *(int *)(dst_row + dest_x * bpp_dst) = color;
+        }
+        i++;
+    }
+}
+
+static void draw_gun_pixels(t_data *data, t_textures *gun_frame, int x, int y)
+{
+    int j;
+    int dest_y;
 
     j = 0;
     while (j < gun_frame->height)
     {
-        int dest_y = y + j;
+        dest_y = y + j;
         if (dest_y >= 0 && dest_y < MAP_HEIGHT)
-        {
-            dst_row = (unsigned char *)data->img.data + dest_y * data->img.size_line;
-            src_row = gun_frame->add + j * gun_frame->line_length;
-            i = 0;
-            while (i < gun_frame->width)
-            {
-                int dest_x = x + i;
-                if (dest_x >= 0 && dest_x < MAP_WIDTH)
-                {
-                    int color = *(int *)(src_row + i * bytes_per_pixel_src);
-                    if (color != 0x000000)
-                    {
-                        *(int *)(dst_row + dest_x * bytes_per_pixel_dst) = color;
-                    }
-                }
-                i++;
-            }
-        }
+            draw_gun_pixel_row(data, gun_frame, j, dest_y, x);  // Pass `j` separately
         j++;
     }
-    mlx_put_image_to_window(data->mlx, data->win, data->img.img_ptr, 0, 0);
 }
 
+void render_gun_sprite(t_data *data)
+{
+    t_textures  *gun_frame;
+    int         x, y;
+
+    update_gun_frame(&data->game);
+    gun_frame = data->game.gun[data->game.current_frame];
+    if (!gun_frame || !gun_frame->add)
+        return;
+    x = (MAP_WIDTH - gun_frame->width) / 2;
+    y = MAP_HEIGHT - gun_frame->height + 10;
+    draw_gun_pixels(data, gun_frame, x, y);
+    mlx_put_image_to_window(data->mlx, data->win, data->img.img_ptr, 0, 0);
+}

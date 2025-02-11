@@ -1,4 +1,4 @@
-# include "cub3d.h"
+#include "../../inc/linux_inc/cub3d.h"
 
 // int key_press(int key, t_data *data)
 // {
