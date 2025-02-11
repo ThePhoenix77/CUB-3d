@@ -44,8 +44,8 @@ enum
 #define RIGHT_KEY 65363    // Right arrow key for rotating right
 #define ESCAPE_KEY 65307   // Escape key
 
-#define MOVE_SPEED 4
-#define ROT_SPEED 0.05
+#define MOVE_SPEED 2
+#define ROT_SPEED 0.03
 #define HITBOX_MARG 0.2
 // #define HITBOX_MARG 0.15 // more edge close
 
@@ -178,7 +178,7 @@ typedef struct s_game
     int             frame_counter;
     int             is_shooting;
     // t_textures *gun[50];
-    t_textures *gun[43];
+    t_textures *gun[8];
     t_textures *image[5];
 
 } t_game;
