@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 17:13:32 by aragragu          #+#    #+#             */
-/*   Updated: 2025/02/11 18:40:17 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/02/12 20:31:24 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,7 +319,13 @@ void	fill_color(char **str, char **texture, int *count)
 {
 	char	*color;
 	int		i;
+	int		flag;
 
+	flag = 1;
+	while (str[flag])
+		flag++;
+	if (flag - 1 > 3)
+		my_perror(1, "error: invalid color\n");
 	i = 0;
 	color = ft_strdup("");
 	while (str[i])

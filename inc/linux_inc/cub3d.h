@@ -68,6 +68,10 @@ enum
 #define FLOOR_COLOR 0x8B4513 // rown
 #define MINIMAP_FRAME_COLOR 0xFFD700 // rown
 
+
+//540   960
+
+
 // --------------------
 // Structures
 // --------------------
@@ -178,7 +182,7 @@ typedef struct s_game
     int             frame_counter;
     int             is_shooting;
     // t_textures *gun[50];
-    t_textures *gun[8];
+    t_textures *gun[21];
     t_textures *image[5];
 
 } t_game;
@@ -295,6 +299,7 @@ int key_release(int key, t_data *data);
 
 // Mouse
 void setup_mouse_rotation(t_data *data);
+int mouse_press(int button, int x, int y, t_data *data);
 
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
 

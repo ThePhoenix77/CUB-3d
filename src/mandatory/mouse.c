@@ -30,3 +30,15 @@ void setup_mouse_rotation(t_data *data)
     mlx_hook(data->win, 6, 1L << 6, handle_mouse_move, data);
     // mlx_mouse_hide(data->mlx, data->win); // Fix: Pass correct arguments
 }
+
+int mouse_press(int button, int x, int y, t_data *data)
+{
+    (void)x;
+    (void)y;
+    if (button == 1 && !data->game.is_shooting)
+    {
+        data->game.is_shooting = 1;
+        data->game.current_frame = 18;
+    }
+    return (0);
+}
