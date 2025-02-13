@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdbool.h>
+# include <limits.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <time.h>
@@ -221,6 +222,19 @@ typedef struct s_cordinate
     double  tex_pos;
 }               t_cordinate;
 
+typedef struct s_info
+{
+    int             x;
+    int             y;
+    int             j;
+    int             dest_y;
+    int             bpp_src;
+    int             bpp_dst;
+    char            *src_row;
+    unsigned char   *dst_row;
+}               t_info;
+
+
 
 // --------------------
 // Prototypes
@@ -330,7 +344,7 @@ char    *ft_strdup(char *s1);
 char    *ft_strchr(const char *s, int c);
 char    *ft_substr(char *s, unsigned int start, size_t len);
 char    **ft_split(char const *s, char c);
-char    **ft_split2(char const *s);
+// char    **ft_split2(char const *s);
 char    *get_next_line(int fd);
 char    *ft_strjoin(char *s1, char *s2);
 void    fill_texture(char *str, char **texture, int *count);
@@ -346,7 +360,8 @@ int        ft_strlen2(char **str);
 void    check_map_surrending(char **map);
 void    free_str(char **str);
 int        is_num(char *str);
-int        ft_atoi(const char *str);
+// int        ft_atoi(const char *str);
+int	    ft_atoi(const char *str, int *succes);
 void     print_data(t_data *data);
 void    check_inside_map(char **map);
 void    check_texture(char *str, t_game *game, int *count);
@@ -357,6 +372,9 @@ int        is_num2(char *str);
 void print_map(char **map);
 char	*ft_strdup2(char *s1);
 char	*ft_itoa(int nb);
+int	is_map_line(char *str);
+int	wrong_char(char c);
+int	map_lenghttttttttttttt(t_data *data);
 // void	my_perror(int status, char *str);
 // int		ft_strncmp(const char *s1, const char *s2, int n);
 // int	 	ft_strlen(const char *str);
@@ -397,8 +415,6 @@ void	images_init(t_data *data);
 void	free_textures(t_data *data);
 void	colors_init(t_data *data);
 void    load_gun_frames(t_data  *data);
-void print_game_textures(t_game *game);
-// int    render_animation(t_data *data);
 void    render_gun_sprite(t_data *data);
 
 #endif

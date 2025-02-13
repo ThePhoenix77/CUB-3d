@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 20:03:57 by aragragu          #+#    #+#             */
-/*   Updated: 2025/02/11 18:50:52 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/02/13 18:49:18 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,7 @@ void	check_inside_map(char **map)
 			if (map[i][j] == '0')
 			{
 				if (!check_surrending(map, i, j))
-				{
-					puts("ok");
 					my_perror(1, "error: invalid map\n");
-				}
 			}
 			j++;
 		}

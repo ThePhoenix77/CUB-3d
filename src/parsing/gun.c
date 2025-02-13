@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 12:46:09 by aragragu          #+#    #+#             */
-/*   Updated: 2025/02/12 20:26:51 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/02/13 16:47:41 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,55 +64,56 @@ static	void	update_gun_frame(t_game *game)
 	game->frame_counter++;
 }
 
-static	void	draw_gun_pixel_row(t_data *data, t_textures *gun_frame, int j, int dest_y, int x)
+static	void	draw_gun_pixel_row(t_data *data, t_textures *gun_frame, \
+	t_info *info)
 {
-	int i;
-	int bpp_src = gun_frame->bp_pixels / 8;
-	int bpp_dst = data->img.bpp / 8;
-		
-	char *src_row = gun_frame->add + j * gun_frame->l_length;
-	unsigned char *dst_row = (unsigned char *)data->img.data + dest_y * data->img.size_line;
+	int	i;
+	int	dest_x;
+	int	color;
 
 	i = 0;
+	info->bpp_src = gun_frame->bp_pixels / 8;
+	info->bpp_dst = data->img.bpp / 8;
+	info->src_row = gun_frame->add + info->j * gun_frame->l_length;
+	info->dst_row = (unsigned char *)data->img.data + info->dest_y \
+		* data->img.size_line;
 	while (i < gun_frame->width)
 	{
-		int dest_x = x + i;
+		dest_x = info->x + i;
 		if (dest_x >= 0 && dest_x < MAP_WIDTH)
 		{
-			int color = *(int *)(src_row + i * bpp_src);
+			color = *(int *)(info->src_row + i * info->bpp_src);
 			if (color != 0x000000)
-				*(int *)(dst_row + dest_x * bpp_dst) = color;
+				*(int *)(info->dst_row + dest_x * info->bpp_dst) = color;
 		}
 		i++;
 	}
 }
 
-static void draw_gun_pixels(t_data *data, t_textures *gun_frame, int x, int y)
+static	void	draw_gun_pixels(t_data *data, t_textures *gun_frame, \
+	t_info *info)
 {
-	int j;
-	int dest_y;
-
-	j = 0;
-	while (j < gun_frame->height)
+	info->j = 0;
+	while (info->j < gun_frame->height)
 	{
-		dest_y = y + j;
-		if (dest_y >= 0 && dest_y < MAP_HEIGHT)
-			draw_gun_pixel_row(data, gun_frame, j, dest_y, x);
-		j++;
+		info->dest_y = info->y + info->j;
+		if (info->dest_y >= 0 && info->dest_y < MAP_HEIGHT)
+			draw_gun_pixel_row(data, gun_frame, info);
+		info->j++;
 	}
 }
 
-void render_gun_sprite(t_data *data)
+void	render_gun_sprite(t_data *data)
 {
-	t_textures  *gun_frame;
-	int		 x, y;
+	t_textures	*gun_frame;
+	t_info		info;
 
 	update_gun_frame(&data->game);
 	gun_frame = data->game.gun[data->game.current_frame];
 	if (!gun_frame || !gun_frame->add)
-		return;
-	x = (MAP_WIDTH - gun_frame->width) / 2;
-	y = MAP_HEIGHT - gun_frame->height + 10;
-	draw_gun_pixels(data, gun_frame, x, y);
+		return ;
+	info.x = (MAP_WIDTH - gun_frame->width) / 2;
+	info.y = MAP_HEIGHT - gun_frame->height;
+	draw_gun_pixels(data, gun_frame, &info);
 	mlx_put_image_to_window(data->mlx, data->win, data->img.img_ptr, 0, 0);
 }
