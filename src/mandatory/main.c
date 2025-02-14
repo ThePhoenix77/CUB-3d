@@ -1,22 +1,15 @@
-# include "../../inc/linux_inc/cub3d.h"
-
-// /home/tboussad/work/CUB-3d/maps/test.map
-
-// void ppos(t_player *player)
-// {
-//     printf("Player Position: x = %.2f, y = %.2f\n", player->x, player->y);
-// }
+#include "../../inc/linux_inc/cub3d.h"
 
 int handle_exit()
 {
     // (void)param;
     printf("Exiting the program...\n");
+    ft_malloc(0, FREE);
     exit(0);
 }
 
 int main(int argc, char *argv[])
 {
-    // (void)argv;
     t_data data;
 
 	if (argc == 2)
