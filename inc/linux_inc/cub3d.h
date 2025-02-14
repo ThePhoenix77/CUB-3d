@@ -214,7 +214,13 @@ void map_init(t_map *map, const char *map_file);
 void set_player_plane(t_player *player);
 int find_player_position(t_map *map, t_player *player);
 void data_init(t_data *data);
+void	init_player_defaults(t_player *player);
 void init_player_direction(t_player *player, char orientation);
+void	init_player_trail(t_player_trail *trail);
+void	init_map_and_player(t_data *data);
+bool	is_player_cell(char cell);
+void	set_player_direction(char cell, t_player *player);
+void	set_direction(t_player *player, double dir_x, double dir_y);
 
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
 
@@ -272,7 +278,11 @@ void strafe_right(t_player *player, t_map *map);
 void rotate_left(t_player *player);
 void rotate_right(t_player *player);
 void move_player(t_data *data);
+void handle_key_press(int key, t_data *data);
+void handle_key_press_rotation(int key, t_data *data);
 int key_press(int key, t_data *data);
+void handle_key_release(int key, t_data *data);
+void handle_key_release_rotation(int key, t_data *data);
 int key_release(int key, t_data *data);
 // void ppos(t_player *player);
 // void draw_rectangle(t_img *img, int x, int y, int width, int height, int color);
