@@ -1,7 +1,7 @@
 NAME = cub3D
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Ofast #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -Ofast 
 
 MLX_MACOS = mlx_macos/libmlx.a
 MLX_LINUX = mlx_linux/libmlx.a
