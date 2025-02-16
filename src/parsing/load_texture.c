@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_texture.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tboussad <tboussad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 18:28:36 by aragragu          #+#    #+#             */
-/*   Updated: 2025/02/13 18:52:09 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/02/15 15:09:27 by tboussad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	xpm_file_to_image(t_data *data, void *mlx)
 			&data->game.image[2]->width, &data->game.image[2]->height);
 	data->game.image[3]->image = mlx_xpm_file_to_image(mlx, data->game.south, \
 			&data->game.image[3]->width, &data->game.image[3]->height);
-	data->game.image[4]->image = mlx_xpm_file_to_image(mlx, "assets/SO.xpm", \
+	data->game.image[4]->image = mlx_xpm_file_to_image(mlx, "assets/DOOR.xpm", \
 			&data->game.image[4]->width, &data->game.image[4]->height);
 }
 

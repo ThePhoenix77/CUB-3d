@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   gun.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tboussad <tboussad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 12:46:09 by aragragu          #+#    #+#             */
-/*   Updated: 2025/02/13 16:47:41 by aragragu         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:10:32 by tboussad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../../inc/linux_inc/cub3d.h"
 
@@ -39,6 +40,7 @@ void	load_gun_frames(t_data	*data)
 	data->game.current_frame = 0;
 	data->game.frame_delay = 5;
 	data->game.frame_counter = 0;
+	data->game.is_shooting = 0;
 }
 
 static	void	update_gun_frame(t_game *game)

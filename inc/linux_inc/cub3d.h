@@ -45,8 +45,8 @@ enum
 #define RIGHT_KEY 65363    // Right arrow key for rotating right
 #define ESCAPE_KEY 65307   // Escape key
 
-#define MOVE_SPEED 2
-#define ROT_SPEED 0.03
+#define MOVE_SPEED 2.8
+#define ROT_SPEED 0.06
 #define HITBOX_MARG 0.2
 // #define HITBOX_MARG 0.15 // more edge close
 
@@ -156,6 +156,27 @@ typedef struct s_ray
     int is_door;
 } t_ray;
 
+typedef struct s_minimap
+{
+    int start_x;
+    int start_y;
+    int end_x;
+    int end_y;
+} t_minimap;
+
+typedef struct s_ceil_floor
+{
+    double ray_dir_x0;
+    double ray_dir_y0;
+    double ray_dir_x1;
+    double ray_dir_y1;
+    double floor_step_x;
+    double floor_step_y;
+    double floor_x;
+    double floor_y;
+} t_ceil_floor;
+
+
 typedef struct s_textures
 {
     void    *image;
@@ -204,6 +225,9 @@ typedef struct s_data
     t_map map;                  // Map data
     t_player player;            // Player data
     t_player_trail player_trail;
+    t_minimap minimap;
+    t_ceil_floor ceil_floor;
+    t_ray ray;
     t_img img;
     t_game  game;
     t_parsing *info;
@@ -245,7 +269,13 @@ void map_init(t_map *map, const char *map_file);
 void set_player_plane(t_player *player);
 int find_player_position(t_map *map, t_player *player);
 void data_init(t_data *data);
+void	init_player_defaults(t_player *player);
 void init_player_direction(t_player *player, char orientation);
+void	init_player_trail(t_player_trail *trail);
+void	init_map_and_player(t_data *data);
+bool	is_player_cell(char cell);
+void	set_player_direction(char cell, t_player *player);
+void	set_direction(t_player *player, double dir_x, double dir_y);
 
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
 
@@ -269,9 +299,9 @@ void render_ceiling_and_floor(t_data *data);
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
 
 // Minimap
-void draw_minimap_tiles(t_data *data, int start_x, int start_y, int end_x, int end_y);
+void draw_minimap_tiles(t_data *data);
 void draw_player_on_minimap(t_data *data);
-void calculate_viewport(t_data *data, int *start_x, int *start_y, int *end_x, int *end_y);
+void calculate_viewport(t_data *data);
 void render_ceiling_and_floor(t_data *data);
 
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
@@ -285,8 +315,8 @@ void render_ceiling_and_floor(t_data *data);
 // void draw_wall(const t_ray *ray, t_data *data, int x);
 // void raycast(t_data *data);
 void initialize_ray(t_ray *ray, t_data *data, int x);
-void calculate_step_and_side_dist(t_ray *ray, t_data *data);
-void perform_dda(t_ray *ray, t_map *map);
+void	calculate_step_and_side_dist(t_ray *ray, t_data *data);
+void	perform_dda(t_ray *ray, t_map *map, t_player *player);
 void calculate_wall_distance(t_ray *ray, t_player *player);
 void calculate_line_dimensions(t_ray *ray, int screen_height);
 void draw_wall(t_ray *ray, t_data *data, int x);
@@ -303,7 +333,11 @@ void strafe_right(t_player *player, t_map *map);
 void rotate_left(t_player *player);
 void rotate_right(t_player *player);
 void move_player(t_data *data);
+void handle_key_press(int key, t_data *data);
+void handle_key_press_rotation(int key, t_data *data);
 int key_press(int key, t_data *data);
+void handle_key_release(int key, t_data *data);
+void handle_key_release_rotation(int key, t_data *data);
 int key_release(int key, t_data *data);
 // void ppos(t_player *player);
 // void draw_rectangle(t_img *img, int x, int y, int width, int height, int color);

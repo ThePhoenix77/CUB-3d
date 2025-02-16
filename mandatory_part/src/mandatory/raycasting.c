@@ -55,5 +55,5 @@ void raycast(t_data *data)
         draw_wall(&ray, data, x);
         x++;
     }
-    mlx_put_image_to_window(data->mlx, data->win, data->img.img_ptr, 0, 0);
+    // mlx_put_image_to_window(data->mlx, data->win, data->img.img_ptr, 0, 0);
 }
