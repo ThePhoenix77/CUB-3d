@@ -1,4 +1,16 @@
-# include "../../inc/linux_inc/cub3d.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   movements2.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboussad <tboussad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/15 14:43:06 by tboussad          #+#    #+#             */
+/*   Updated: 2025/02/15 14:48:30 by tboussad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../inc/linux_inc/cub3d.h"
 
 int	is_walkable(t_map *map, double x, double y)
 {
@@ -12,14 +24,14 @@ int	is_walkable(t_map *map, double x, double y)
 	top_left_y = (int)(y - HITBOX_MARG);
 	bottom_right_x = (int)(x + HITBOX_MARG);
 	bottom_right_y = (int)(y + HITBOX_MARG);
-	walkable = (map->grid[top_left_y][top_left_x] == '0' ||
-			map->grid[top_left_y][top_left_x] == 'D') &&
-			(map->grid[top_left_y][bottom_right_x] == '0' ||
-			map->grid[top_left_y][bottom_right_x] == 'D') &&
-			(map->grid[bottom_right_y][top_left_x] == '0' ||
-			map->grid[bottom_right_y][top_left_x] == 'D') &&
-			(map->grid[bottom_right_y][bottom_right_x] == '0' ||
-			map->grid[bottom_right_y][bottom_right_x] == 'D');
+	walkable = (map->grid[top_left_y][top_left_x] == '0'
+			|| map->grid[top_left_y][top_left_x] == 'D')
+		&& (map->grid[top_left_y][bottom_right_x] == '0'
+			|| map->grid[top_left_y][bottom_right_x] == 'D')
+		&& (map->grid[bottom_right_y][top_left_x] == '0'
+			|| map->grid[bottom_right_y][top_left_x] == 'D')
+		&& (map->grid[bottom_right_y][bottom_right_x] == '0'
+			|| map->grid[bottom_right_y][bottom_right_x] == 'D');
 	return (walkable);
 }
 

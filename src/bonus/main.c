@@ -6,7 +6,7 @@
 /*   By: tboussad <tboussad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 20:03:23 by tboussad          #+#    #+#             */
-/*   Updated: 2025/02/12 20:03:28 by tboussad         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:09:46 by tboussad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ int	main(int argc, char *argv[])
 		data_init(&data);
 		setup_mouse_rotation(&data);
 		setup_hooks(&data);
+		mlx_mouse_hook(data.win, mouse_press, &data);
 		mlx_loop(data.mlx);
 		free_textures(&data);
 		ft_malloc(0, FREE);
-		puts("done");
 	}
 	else
 		my_perror(1, "wrong arguments\n");

@@ -1,85 +1,98 @@
 #ifndef CUB3D_H
-# define CUB3D_H
+#define CUB3D_H
 
-# include <../../mlx_linux/mlx.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <math.h>
-# include <stdbool.h>
-# include <fcntl.h>
-# include <unistd.h>
+#include <../../mlx_linux/mlx.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <stdbool.h>
+# include <limits.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <time.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10
 # endif
 
-/* -------------------- */
-/*   Garbage Collector  */
-/* -------------------- */
+// Macro for enabling/disabling debug output
+#define DEBUG_MODE 1
+
+#if DEBUG_MODE
+#define DEBUG_PRINTF(...) printf(__VA_ARGS__)
+#else
+#define DEBUG_PRINTF(...)
+#endif
+
 enum
 {
     FREE,
     ALLOC,
 };
 
-/* -------------------- */
-/* Constants            */
-/* -------------------- */
-# define CELL_SIZE 32      /* Map tile size */
-# define FOV 0.66          /* Field of view */
+// 💨🥂🍎🍌🥬 ou tiriri m3a 💃
+// --------------------
+// Constants
+// --------------------       
+#define CELL_SIZE 32          // Map tile size
+#define FOV 0.66               // Field of view
 
-/* Keybindings */
-# define W_KEY 119         /* W key for forward */
-# define A_KEY 97          /* A key for strafe left */
-# define S_KEY 115         /* S key for backward */
-# define D_KEY 100         /* D key for strafe right */
-# define O_KEY 111         /* O key for door opening */
-# define LEFT_KEY 65361    /* Left arrow key for rotating left */
-# define RIGHT_KEY 65363   /* Right arrow key for rotating right */
-# define ESCAPE_KEY 65307  /* Escape key */
+#define W_KEY 119          // W key for forward
+#define A_KEY 97           // A key for strafe left
+#define S_KEY 115          // S key for backward
+#define D_KEY 100          // D key for strafe right
+#define LEFT_KEY 65361     // Left arrow key for rotating left
+#define RIGHT_KEY 65363    // Right arrow key for rotating right
+#define ESCAPE_KEY 65307   // Escape key
 
-/* Movement & Rotation */
-# define MOVE_SPEED 8
-# define ROT_SPEED 0.08
-# define HITBOX_MARG 0.2   /* Adjust hitbox margin */
-# define PI 3.141592653589793
+#define MOVE_SPEED 2.8
+#define ROT_SPEED 0.06
+#define HITBOX_MARG 0.2
+// #define HITBOX_MARG 0.15 // more edge close
 
-/* Map & Minimap dimensions */
-# define MAP_WIDTH 2048
-# define MAP_HEIGHT 960
-# define MINIMAP_CENTER_X 100
-# define MINIMAP_CENTER_Y 100
-# define MINIMAP_TILE_SIZE 10
-# define MINIMAP_RADIUS 100
-# define MINIMAP_WIDTH 200
-# define MINIMAP_HEIGHT 200
-# define MINIMAP_SCALE 4
-# define TRAIL_MAX_SIZE 100
+#define PI 3.141592653589793
 
-/* Colors */
-# define CEILING_COLOR 0x87CEEB /* Sky blue */
-# define FLOOR_COLOR 0x8B4513   /* Brown */
-# define MINIMAP_FRAME_COLOR 0xFFD700 /* Gold */
+#define MAP_WIDTH 2400
+#define MAP_HEIGHT 800
 
-/* -------------------- */
-/* Structures           */
-/* -------------------- */
+#define MINIMAP_CENTER_X 100 // Adjust as needed for your window dimensions
+#define MINIMAP_CENTER_Y 100
+#define MINIMAP_TILE_SIZE 10
+
+#define MINIMAP_RADIUS 100
+#define MINIMAP_WIDTH 200
+#define MINIMAP_HEIGHT 200
+#define MINIMAP_SCALE 4
+#define TRAIL_MAX_SIZE 100 
+
+#define CEILING_COLOR 0x87CEEB // Sky blue
+#define FLOOR_COLOR 0x8B4513 // rown
+#define MINIMAP_FRAME_COLOR 0xFFD700 // rown
+
+
+//540   960
+
+
+// --------------------
+// Structures
+// --------------------
 
 typedef struct s_player_trail
 {
-    int x[TRAIL_MAX_SIZE]; /* X coordinates of trail positions */
-    int y[TRAIL_MAX_SIZE]; /* Y coordinates of trail positions */
-    int size;              /* Current size of the trail */
+    int x[TRAIL_MAX_SIZE];   // X coordinates of trail positions
+    int y[TRAIL_MAX_SIZE];   // Y coordinates of trail positions
+    int size;                // Current size of the trail (number of positions stored)
 } t_player_trail;
 
+// Player structure
 typedef struct s_player
 {
     double x;
-    double y;
+	double y;                // Player's position in the map
     double dir_x;
-    double dir_y;
+	double dir_y;        // Direction vector
     double plane_x;
-    double plane_y;
+	double plane_y;    // Camera plane (used for FOV calculations)
     int forward;
     int backward;
     int left;
@@ -93,29 +106,32 @@ typedef struct s_player
     int door_open;
 } t_player;
 
+// Map structure
 typedef struct s_map
 {
-    char **grid;           /* 2D grid representing the map */
+    char **grid;                // 2D grid representing the map
     int width;
-    int height;
-    int doors[MAP_HEIGHT][MAP_WIDTH]; /* Door locations */
+	int height;          // Map dimensions
 } t_map;
+
 
 typedef struct s_free
 {
-    void *add;
-    struct s_free *next;
-} t_free;
+    void    *add;
+    struct s_free   *next;
+}               t_free;
 
+
+// Image structure (for textures or frame buffers)
 typedef struct s_img
 {
-    void *img_ptr;         /* Image pointer */
-    unsigned char *data;   /* Pixel data */
-    int bpp;
-    int size_line;
-    int endian;
-    int width;
-    int height;
+    void *img_ptr;              // Image pointer in MiniLibX
+    unsigned char *data;                 // Pixel data
+    int bpp;                    // Bits per pixel
+    int size_line;              // Size of a line
+    int endian;   
+    int width;                  // Width of the image
+    int height;               // Endianness of pixel data
 } t_img;
 
 typedef struct s_ray
@@ -129,7 +145,7 @@ typedef struct s_ray
     double delta_dist_y;
     double side_dist_x;
     double side_dist_y;
-    double perp_wall_dist; /* Distance from player to wall */
+    double perp_wall_dist;   ///distination from the player to the wall
     int step_x;
     int step_y;
     int hit;
@@ -160,51 +176,90 @@ typedef struct s_ceil_floor
     double floor_y;
 } t_ceil_floor;
 
+
 typedef struct s_textures
 {
-    void *image;
-    void *add;
-    int width;
-    int height;
-    int bits_per_pixel;
-    int line_length;
-    int endian;
+    void    *image;
+    void    *add;
+    int     width;      // Texture width
+    int     height;     // Texture height
+    int     bp_pixels; // Bits per pixel (MLX fills this)
+    int     l_length;    // Bytes per row (MLX fills this)
+    int     endian; 
 } t_textures;
 
 typedef struct s_game
 {
-    char *norh;
-    char *west;
-    char *east;
-    char *south;
-    char *floor;
-    char *ceiling;
-    unsigned int c_floor;
-    unsigned int c_ceiling;
+	char	*norh;
+	char	*west;
+	char	*east;
+	char	*south;
+	char	*floor;
+	char	*ceiling;
+    unsigned int    c_floor;
+    unsigned int    c_ceiling;
+    int             current_frame;
+    double          last_frame_time;
+    double          frame_delay;
+    int             frame_counter;
+    int             is_shooting;
+    // t_textures *gun[50];
+    t_textures *gun[21];
     t_textures *image[5];
+
 } t_game;
+
 
 typedef struct s_parsing
 {
-    int fd;
-    int file_lenght;
-    int map_start_index;
-    char **file_lines;
+	int			fd;
+	int			file_lenght;
+	int			map_start_index;
+	char		**file_lines;
 } t_parsing;
 
 typedef struct s_data
 {
-    void *mlx;
-    void *win;
-    t_map map;
-    t_player player;
+    void *mlx;                  // MiniLibX instance
+    void *win;                  // Window pointer
+    t_map map;                  // Map data
+    t_player player;            // Player data
     t_player_trail player_trail;
     t_minimap minimap;
     t_ceil_floor ceil_floor;
+    t_ray ray;
     t_img img;
-    t_game game;
+    t_game  game;
     t_parsing *info;
+    // int key_state[256];
 } t_data;
+
+typedef struct s_cordinate
+{
+    int     y;
+    int     color;
+    int     tex_num;
+    double  wall_x;
+    int     tex_x;
+    int     tex_y;
+    double  tex_step;
+    double  tex_pos;
+}               t_cordinate;
+
+typedef struct s_info
+{
+    int             x;
+    int             y;
+    int             j;
+    int             dest_y;
+    int             bpp_src;
+    int             bpp_dst;
+    char            *src_row;
+    unsigned char   *dst_row;
+}               t_info;
+
+
+
 // --------------------
 // Prototypes
 // --------------------
@@ -260,8 +315,8 @@ void render_ceiling_and_floor(t_data *data);
 // void draw_wall(const t_ray *ray, t_data *data, int x);
 // void raycast(t_data *data);
 void initialize_ray(t_ray *ray, t_data *data, int x);
-void calculate_step_and_side_dist(t_ray *ray, t_data *data);
-void perform_dda(t_ray *ray, t_map *map, t_player *player);
+void	calculate_step_and_side_dist(t_ray *ray, t_data *data);
+void	perform_dda(t_ray *ray, t_map *map, t_player *player);
 void calculate_wall_distance(t_ray *ray, t_player *player);
 void calculate_line_dimensions(t_ray *ray, int screen_height);
 void draw_wall(t_ray *ray, t_data *data, int x);
@@ -292,14 +347,12 @@ int key_release(int key, t_data *data);
 
 // Mouse
 void setup_mouse_rotation(t_data *data);
+int mouse_press(int button, int x, int y, t_data *data);
 
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
 
 //Doors
-void open_door(t_data *data);
-// void try_open_door(t_data *data, int x, int y);
-// void auto_close_doors(t_map *map);
-// void handle_door(t_ray *ray, t_data *data);
+void handle_door(t_ray *ray, t_data *data);
 
                                 /*~~~~ /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ ~~~~*/
 
@@ -325,7 +378,7 @@ char    *ft_strdup(char *s1);
 char    *ft_strchr(const char *s, int c);
 char    *ft_substr(char *s, unsigned int start, size_t len);
 char    **ft_split(char const *s, char c);
-char    **ft_split2(char const *s);
+// char    **ft_split2(char const *s);
 char    *get_next_line(int fd);
 char    *ft_strjoin(char *s1, char *s2);
 void    fill_texture(char *str, char **texture, int *count);
@@ -341,7 +394,8 @@ int        ft_strlen2(char **str);
 void    check_map_surrending(char **map);
 void    free_str(char **str);
 int        is_num(char *str);
-int        ft_atoi(const char *str);
+// int        ft_atoi(const char *str);
+int	    ft_atoi(const char *str, int *succes);
 void     print_data(t_data *data);
 void    check_inside_map(char **map);
 void    check_texture(char *str, t_game *game, int *count);
@@ -351,6 +405,10 @@ void    fill_color(char **str, char **texture, int *count);
 int        is_num2(char *str);
 void print_map(char **map);
 char	*ft_strdup2(char *s1);
+char	*ft_itoa(int nb);
+int	is_map_line(char *str);
+int	wrong_char(char c);
+int	map_lenghttttttttttttt(t_data *data);
 // void	my_perror(int status, char *str);
 // int		ft_strncmp(const char *s1, const char *s2, int n);
 // int	 	ft_strlen(const char *str);
@@ -390,5 +448,7 @@ char	*ft_strdup2(char *s1);
 void	images_init(t_data *data);
 void	free_textures(t_data *data);
 void	colors_init(t_data *data);
+void    load_gun_frames(t_data  *data);
+void    render_gun_sprite(t_data *data);
 
 #endif

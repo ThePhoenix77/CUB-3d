@@ -6,7 +6,7 @@
 /*   By: tboussad <tboussad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 15:31:53 by tboussad          #+#    #+#             */
-/*   Updated: 2025/02/12 15:33:45 by tboussad         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:00:04 by tboussad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	data_init(t_data *data)
 	init_mlx_and_window(data);
 	images_init(data);
 	colors_init(data);
+	load_gun_frames(data);
 	init_map_and_player(data);
 	init_img(data);
 }

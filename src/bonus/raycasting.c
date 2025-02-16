@@ -37,61 +37,6 @@ void	calculate_line_dimensions(t_ray *ray, int screen_height)
 		ray->draw_end = screen_height - 1;
 }
 
-int	get_texture_number(t_ray *ray)
-{
-	if (ray->is_door == 1 && ray->hit == 2)
-		return (4);
-	if (ray->side == 0 && ray->ray_dir_x > 0)
-		return (0);
-	else if (ray->side == 0 && ray->ray_dir_x < 0)
-		return (1);
-	else if (ray->side == 1 && ray->ray_dir_y > 0)
-		return (2);
-	else if (ray->side == 1 && ray->ray_dir_y < 0)
-		return (3);
-	return (0);
-}
-
-void	draw_wall(t_ray *ray, t_data *data, int x)
-{
-	int		y;
-	int		color;
-	int		tex_num;
-	double	wall_x;
-	int		tex_x;
-	int		tex_y;
-	double	tex_step;
-	double	tex_pos;
-
-	if (ray->hit == 2)
-		tex_num = 4;
-	else
-		tex_num = get_texture_number(ray);
-	if (ray->side == 0)
-		wall_x = data->player.y + (ray->perp_wall_dist * CELL_SIZE) * ray->ray_dir_y;
-	else
-		wall_x = data->player.x + (ray->perp_wall_dist * CELL_SIZE) * ray->ray_dir_x;
-	wall_x = fmod(wall_x, CELL_SIZE);
-	wall_x /= CELL_SIZE;
-	tex_x = (int)(wall_x * data->game.image[tex_num]->width);
-	if ((ray->side == 0 && ray->ray_dir_x > 0) || (ray->side == 1 && ray->ray_dir_y < 0))
-		tex_x = data->game.image[tex_num]->width - tex_x - 1;
-	tex_step = 1.0 * data->game.image[tex_num]->height / ray->line_height;
-	tex_pos = (ray->draw_start - MAP_HEIGHT / 2 + ray->line_height / 2) * tex_step;
-	y = ray->draw_start;
-	while (y <= ray->draw_end)
-	{
-		tex_y = (int)tex_pos;
-		if (tex_y >= data->game.image[tex_num]->height)
-			tex_y = data->game.image[tex_num]->height - 1;
-		tex_pos += tex_step;
-		color = *(int *)(data->game.image[tex_num]->add + tex_y * data->game.image[tex_num]->line_length + tex_x
-			* (data->game.image[tex_num]->bits_per_pixel / 8));
-		draw_pixel(&data->img, x, y, color);
-		y++;
-	}
-}
-
 void	raycast(t_data *data)
 {
 	t_ray	ray;

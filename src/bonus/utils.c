@@ -1,10 +1,20 @@
-# include "../../inc/linux_inc/cub3d.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tboussad <tboussad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/15 14:52:59 by tboussad          #+#    #+#             */
+/*   Updated: 2025/02/15 14:54:07 by tboussad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int game_loop(t_data *data)
+#include "../../inc/linux_inc/cub3d.h"
+
+int	game_loop(t_data *data)
 {
-    // auto_close_doors(&data->map);
-    render(data);
-    move_player(data);
-    // usleep(16667); // 60fps
-    return (0);
+	render(data);
+	move_player(data);
+	return (0);
 }

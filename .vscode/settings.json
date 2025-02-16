@@ -62,6 +62,7 @@
     "mlx.h": "c",
     "cmath": "c",
     "map": "c",
-    "format": "c"
+    "format": "c",
+    "algorithm": "c"
   }
 }

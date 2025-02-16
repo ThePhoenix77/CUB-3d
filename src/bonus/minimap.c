@@ -6,40 +6,11 @@
 /*   By: tboussad <tboussad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 20:03:41 by tboussad          #+#    #+#             */
-/*   Updated: 2025/02/12 20:05:24 by tboussad         ###   ########.fr       */
+/*   Updated: 2025/02/15 14:39:52 by tboussad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/linux_inc/cub3d.h"
-
-void	player_dir(t_data *data, int player_x, int player_y)
-{
-	int		i;
-	int		x_end;
-	int		y_end;
-	int		steps;
-	int		dot_x;
-	int		dot_y;
-	int		color;
-	double	dx;
-	double	dy;
-
-	i = 1;
-	x_end = player_x + (int)(data->player.dir_x * CELL_SIZE / 2);
-	y_end = player_y + (int)(data->player.dir_y * CELL_SIZE / 2);
-	steps = 10;
-	dx = (x_end - player_x) / (double)steps;
-	dy = (y_end - player_y) / (double)steps;
-	while (i <= steps)
-	{
-		dot_x = player_x + (int)(dx * i);
-		dot_y = player_y + (int)(dy * i);
-		color = 0x00FF00 - (0x000FFF * i);
-		draw_rectangle(&data->img, dot_x - 1, dot_y - 1, 2, 2,
-			color, MAP_WIDTH, MAP_HEIGHT);
-		i++;
-	}
-}
 
 void	draw_minimap_tile(t_data *data, int x, int y)
 {
@@ -75,18 +46,6 @@ void	draw_minimap_tiles(t_data *data)
 	}
 }
 
-void	draw_player_on_minimap(t_data *data)
-{
-	int	player_x;
-	int	player_y;
-
-	player_x = (MINIMAP_WIDTH / 2) - 2;
-	player_y = (MINIMAP_HEIGHT / 2) - 2;
-	draw_rectangle(&data->img, player_x + 10, player_y + 10,
-		4, 4, 0xFF00FF, MINIMAP_WIDTH, MINIMAP_HEIGHT);
-	player_dir(data, player_x + 12, player_y + 12);
-}
-
 void	draw_minimap_frame(t_data *data)
 {
 	int	frame_color;
@@ -103,7 +62,7 @@ void	draw_minimap_frame(t_data *data)
 }
 
 void	render_minimap(t_data *data)
-{  
+{
 	calculate_viewport(data);
 	draw_minimap_frame(data);
 	draw_minimap_tiles(data);

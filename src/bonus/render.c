@@ -6,4 +6,5 @@ void	render(t_data *data)
 	render_ceiling_and_floor(data);
 	raycast(data);
 	render_minimap(data);
+	render_gun_sprite(data);
 }
