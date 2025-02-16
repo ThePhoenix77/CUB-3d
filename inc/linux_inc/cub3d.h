@@ -178,11 +178,9 @@ typedef struct s_game
     unsigned int    c_floor;
     unsigned int    c_ceiling;
     int             current_frame;
-    double          last_frame_time;
     double          frame_delay;
     int             frame_counter;
     int             is_shooting;
-    // t_textures *gun[50];
     t_textures *gun[21];
     t_textures *image[5];
 
